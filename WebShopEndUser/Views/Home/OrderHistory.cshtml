@@ -1,0 +1,45 @@
+﻿@using WebShopCore.Helper;
+@model List<WebShopCore.ViewModel.Order.OrderViewModel>
+@{
+    ViewData["Title"] = "Lịch sử mua hàng";
+}
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Mã đơn hàng</td>
+                <td>Ngày đặt hàng</td>
+                <td>Sản phẩm</td>
+                <td>Tổng cộng</td>
+                <td>Trạng thái đơn hàng</td>
+                <td>Trạng thái vận chuyển</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model != null)
+            {
+                foreach(var order in Model)
+                {
+                    <tr>
+                        <td>@order.Code</td>
+                        <td>@order.CreatedAt</td>
+                        <td>
+                            @foreach(var orderItem in order.OrderItems)
+                            {
+                                <div>@orderItem.Product.Name</div>
+                            }
+                        </td>
+                        <td>@order.Total.ConvertToVND()</td>
+                        <td>@order.OrderStatusDisplay</td>
+                        <td>@order.ShippingStatusDisplay</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <div>Lịch sử mua hàng trống</div>
+            }
+        </tbody>
+    </table>
+</div>

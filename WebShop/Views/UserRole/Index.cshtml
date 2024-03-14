@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebShopCore.ViewModel.UserRole.RoleViewModel>
+@{
+    ViewData["Title"] = "Role Index";
+    ViewBag.active = "2";
+}
+
+<a asp-action="Create" asp-controller="UserRole">Thêm vai trò</a>
+<div>
+    <table class="table">
+        <thead>
+            <tr>Tên vai trò</tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@role.RoleId">Delete</a> |
+                            <a asp-action="Edit" asp-route-id="@role.RoleId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@role.RoleId">Details</a> |
+                            <a asp-action="SetActionForRole" asp-route-RoleId="@role.RoleId">Set Actions</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

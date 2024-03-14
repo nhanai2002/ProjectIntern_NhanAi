@@ -1,0 +1,46 @@
+﻿@model List<WebShopCore.ViewModel.Image.ImageViewModel>
+@{
+    ViewData["Title"] = "Hình ảnh sản phẩm";
+    ViewBag.active = "5";
+}
+
+<p>
+    <a asp-action="CreateProductImages" asp-controller="Image" asp-route-productId="@ViewData["ProductId"]">Create New Image</a>
+    <br />
+    <a asp-action="Trash" asp-controller="Image">Trash</a>
+
+</p>
+<h4>Mã sản phẩm : @ViewData["ProductId"]</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Hình ảnh</th>
+            <th>Thời gian tạo</th>
+            <th>Cập nhật lúc</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ImageId</td>
+                    <td>
+                        <img style="height:100px; width:100px" src="@item.Url" />
+                    </td>
+                    <td>@item.CreatedAt</td>
+                    <td>@item.UpdatedAt</td>
+                    <td>
+                        <a href="@Url.Action("DeleteProductImages", new {id = item.ImageId, productId = ViewData["ProductId"]})">Delete</a>
+                        <a href="@Url.Action("EditProductImages", new {id = item.ImageId, productId = ViewData["ProductId"]})">Edit</a>
+                    </td>
+                </tr>
+                
+            }
+
+        }
+    </tbody>
+</table>

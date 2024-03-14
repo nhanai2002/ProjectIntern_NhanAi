@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Index Product";
+    ViewBag.active = "3";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+}
+
+<div>
+    <table class="table">
+        <a asp-action="Create" asp-controller="Product" style="margin-top:5px; display:block">
+            <button class="btn btn-danger">Thêm sản phẩm</button>
+        </a>
+        <br />
+
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Mã sản phẩm</th>
+                @*<th scope="col">Hình ảnh</th>*@
+                <th scope="col">Giá</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Cập nhật lúc</th>
+                <th scope="col">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <th scope="row">@product.ProductId</th>
+                        <td>@product.Name</td>
+                        <td>@product.Code</td>
+                        <td>@(String.Format(info, "{0:c}", product.BasePrice))</td>
+                        <td>@product.Description</td>
+                        <td>@product.CreatedAt</td>
+                        <td>@(product.IsActive ? "Hoạt động" : "Không hoạt động")</td>
+                        <td>@product.UpdatedAt</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@product.ProductId">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@product.ProductId">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="ProductImages" asp-controller="Image" asp-route-productId="@product.ProductId">
+                                <i class="fa-regular fa-image"></i>
+                            </a>
+                            <a asp-action="SetStatus" asp-controller="Product" asp-route-productId="@product.ProductId">Set status</a> 
+                        </td>
+                    </tr>
+                }
+            }
+            
+        </tbody>
+    </table>
+
+</div>

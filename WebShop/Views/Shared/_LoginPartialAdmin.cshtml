@@ -1,0 +1,31 @@
+﻿@using WebShopCore.Helper
+@{
+    var user = Context.Session.GetCurrentAuthentication();
+}
+@if(user != null)
+{
+    <ul class="navbar-nav  justify-content-end">
+        <li class="nav-item d-flex align-items-center dropdown">
+            <a asp-action="Login" asp-controller="Auth" class="nav-link text-white font-weight-bold px-0">
+                <span class="d-sm-inline d-none">
+                    <img src="@user.AvatarUrl" style="height: 25px;width: 25px;border-radius: 50%;border: 1px solid #808080;cursor: pointer;" />
+                    @user.Name
+                </span>
+            </a> | 
+            <a asp-action="Logout" asp-controller="Auth">Đăng xuất</a>
+
+
+        </li>
+    </ul>
+
+}
+else
+{
+    <ul class="navbar-nav  justify-content-end">
+        <li class="nav-item d-flex align-items-center">
+            <a asp-action="Login" asp-controller="Auth" class="nav-link text-white font-weight-bold px-0">
+                <span class="d-sm-inline d-none">Login</span>
+            </a>
+        </li>
+    </ul>
+}

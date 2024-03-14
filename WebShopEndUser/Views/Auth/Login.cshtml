@@ -1,0 +1,38 @@
+﻿@model WebShopCore.ViewModel.User.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Login Form
+        </div>
+        <form asp-controller="Auth" asp-action="Login" method="post">
+            <div class="field">
+                <input asp-for="UserName" required>
+                <label>Username</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input type="password" asp-for="Password" required>
+                <label>Password</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="content">
+                <div class="pass-link">
+                    <a asp-action="ForgotPassword" asp-controller="Auth">Forgot password?</a>
+                </div>
+            </div>
+            <div class="field">
+                <input type="submit" value="Login">
+            </div>
+            <div class="signup-link">
+                Not a member? <a asp-action="Register" asp-controller="Auth">Signup now</a>
+            </div>
+        </form>
+    </div>
+</body>

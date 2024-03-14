@@ -1,0 +1,59 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model WebShopCore.ViewModel.User.UserCrudModel
+@{
+    ViewData["Title"] = "Register";
+}
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Register Form
+        </div>
+        <form asp-controller="Auth" asp-action="Register" method="post">
+            <div class="field">
+                <input asp-for="UserName" required>
+                <label>Username</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input asp-for="Email">
+                <label>Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input asp-for="Name" required>
+                <label>Name</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label>Giới tính</label>
+                <select class="form-select" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
+                    <option selected="selected" value="">Chọn giới tính</option>
+                </select>
+            </div>
+            <div class="field">
+                <input asp-for="BirthDay" type="date">
+                <label>Ngày sinh</label>
+                <span asp-validation-for="BirthDay" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input asp-for="Phone">
+                <label>Số điện thoại</label>
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input asp-for="Address">
+                <label>Địa chỉ</label>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <input type="password" asp-for="Password" required>
+                <label>Mật khẩu</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</body>

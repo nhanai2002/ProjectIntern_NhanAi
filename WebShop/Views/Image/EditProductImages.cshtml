@@ -1,0 +1,25 @@
+﻿@model WebShopCore.ViewModel.Image.ImageCrudModel
+@{
+    ViewData["Title"] = "Sửa hình ảnh";
+}
+<label>Hình ảnh gốc</label>
+<img style="height:100px; width:100px" src="@Model.Url" />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditProductImages" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProductId" />
+            <input type="hidden" asp-for="ImageId" />
+            <input type="hidden" asp-for="Url" />
+            <div class="form-group">
+                <label asp-for="FileImage" class="control-label"></label>
+                <input type="file" asp-for="FileImage" />
+                <span asp-validation-for="FileImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

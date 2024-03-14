@@ -1,0 +1,26 @@
+﻿@using WebShopCore.Helper
+@{
+    var user = Context.Session.GetCurrentAuthentication();
+}
+@if(user != null){
+    <div class="dropdown">
+        <a>
+            <img src="@user.AvatarUrl" class="avatar" />
+            @user.Name
+        </a>
+        <div class="dropdown-menu">
+            <a asp-action="UserProfile" asp-controller="Setting">Profile</a>
+            <a asp-action="OrderHistory" asp-controller="Home">Lịch sử mua hàng</a>
+            <a asp-action="Logout" asp-controller="Auth">Đăng xuất</a>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index" asp-controller="Cart">Giỏ hàng</a>
+    </div>
+}
+else{
+    <ul>
+        <li><a asp-action="Register" asp-controller="Auth">Đăng ký</a></li> | 
+        <li><a asp-action="Login" asp-controller="Auth">Đăng nhập</a></li>
+    </ul>
+}

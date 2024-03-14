@@ -1,0 +1,54 @@
+﻿@model WebShopCore.ViewModel.Coupon.CouponCrudModel
+
+@{
+    ViewData["Title"] = "Tạo mới mã khuyến mãi";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Coupon" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>Tên mã khuyến mãi</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Mã khuyến mãi</label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Thời gian bắt đầu</label>
+                <input asp-for="TimeStart" class="form-control" />
+                <span asp-validation-for="TimeStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Thời gian kết thúc</label>
+                <input asp-for="TimeEnd" class="form-control" />
+                <span asp-validation-for="TimeEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Giá trị</label>
+                <input asp-for="CouponPriceValue" class="form-control" />
+                <span asp-validation-for="CouponPriceValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Hình thức giảm giá</label>
+                <select class="form-control" asp-for="CouponPriceType" asp-items="Html.GetEnumSelectList<SysEnum.CouponType>()">
+                    <option selected="selected" value="">Hình thức giảm giá</option>
+                </select>
+                <span asp-validation-for="CouponPriceValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Lượt sử dụng</label>
+                <input asp-for="LimitationTimes" class="form-control" />
+                <span asp-validation-for="LimitationTimes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

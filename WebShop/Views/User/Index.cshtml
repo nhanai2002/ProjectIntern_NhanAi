@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebShopCore.ViewModel.Auth.AuthenticationModel>
+@{
+    ViewData["Title"] = "Danh sách người dùng";
+    ViewBag.active = "1";
+}
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                Tên user
+            </tr>
+            <tr>
+                Mã user
+            </tr>
+            <tr>
+                Email
+            </tr>
+            <tr>
+                Số điện thoại
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.UserGuid</td>
+                        <td>@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a> |
+                            <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> |
+                            <a asp-action="ResetPassword" asp-route-id="@user.UserId">Reset password</a> |
+                            <a asp-action="SetRole" asp-controller="UserRole" asp-route-UserId="@user.UserId">Set Role</a> |
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

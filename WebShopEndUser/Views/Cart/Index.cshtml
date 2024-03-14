@@ -1,0 +1,86 @@
+﻿@model WebShopCore.ViewModel.Cart.CartViewModel
+@{
+    ViewData["Title"] = "Cart";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Action</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var cartItem in Model.CartItems)
+                {
+                    <tr>
+                        @if(cartItem.Product.ProductImages.Count() > 0)
+                        {
+                            var img = cartItem.Product.ProductImages.FirstOrDefault().Image.Url;
+                            <td>
+                                <img style="height: 100px" src="@img">
+                            </td>
+                        }
+                        <td>@cartItem.Product.Name</td>
+                        <td>@(String.Format(info, "{0:c}", cartItem.Product.SellPrice))</td>
+                        <td>
+                            <div>
+                                <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="false">
+                                    <i class="fa fa-minus"></i>
+                                </a>
+                                <input type="number" asp-for="@cartItem.Quantity">
+                                <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="true">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-action="RemoveCartItem" asp-route-cartItemId="@cartItem.CartItemId">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+                                    <circle cx="12" cy="12" r="10">
+                                    </circle>
+                                    <line x1="15" y1="9" x2="9" y2="15">
+                                    </line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </a>
+                        </td>
+                        <td>@(String.Format(info, "{0:c}", cartItem.Product.SellPrice*cartItem.Quantity))</td>
+                    </tr>
+                }
+
+
+                <tr>
+                    <td>Total price : </td>
+                    <td>@(String.Format(info, "{0:c}", Model.Total))</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a asp-action="Index" asp-controller="Home" style="color:white">
+                            <button class="btn btn-secondary">Trở về</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Checkout" style="color: white">
+                            <button class="btn btn-danger">
+                                Check out
+                            </button>
+                        </a>
+                     </td>
+                </tr>
+            }
+            else
+            {
+                <h4>Giỏ hàng trống</h4>
+            }
+        </tbody>
+    </table>
+
+</div>

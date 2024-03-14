@@ -1,0 +1,53 @@
+﻿@using WebShopCore.ViewModel.Category;
+@using static WebShopCore.Const.SysEnum;
+@model List<WebShopCore.ViewModel.Product.ProductViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var categoryList = (List<CategoryViewModel>)ViewBag.CategoryList;
+}
+
+<div class="d-flex flex-wrap">
+    @if(Model != null)
+    {
+        foreach(var item in Model)
+        {
+            <div class="photodetail w-25 p-2">
+                @if (item.ProductImages.Count() > 0)
+                {
+                     var img = item.ProductImages.FirstOrDefault().Image.Url;
+                    <div>
+                        <img style="height: 100px" src="@img" />
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <img style="height: 100px" src="~/img/no-image.jpg" />
+                    </div>
+                }
+                <div>
+                    <h4>@item.Name</h4>
+                    @(String.Format(info, "{0:c}", @item.SellPrice))
+                    <a asp-action="CreateCart" asp-controller="Cart" asp-route-productId="@item.ProductId">
+                        Add to Cart
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    <div class="form-group">
+        <form asp-action="Index" asp-controller="Home">
+            <input name="keyword" placeholder="Tìm kiếm..." />
+            <div>
+                <select name="SelectedKeyword" asp-items="@(new SelectList(categoryList, "CategoryId", "Name"))">
+                    <option selected="selected" value="">Lọc...</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Tìm</button>
+        </form>
+    </div>
+
+
+</div>

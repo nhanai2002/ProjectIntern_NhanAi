@@ -1,0 +1,65 @@
+﻿@using WebShopCore.Const;
+@using static WebShopCore.Helper.Extensions
+@model WebShopCore.ViewModel.User.UserViewModel
+@{
+    ViewData["Title"] = "Kiểm tra thanh toán";
+}
+<h1>Thông tin thanh toán</h1>
+<div class="row">
+    <div class="col-xl-6 col-sm-12">
+        <form>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="mb-3 col-sm-6">
+                    <label>Tên</label>
+                    <input asp-for="Name" readonly class="form-control" />
+                </div>
+                <div class="mb-3 col-sm-6">
+                    <label>Số điện thoại</label>
+                    <input asp-for="Phone" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Địa chỉ</label>
+                <input asp-for="Address" readonly class="form-control" />
+            </div>
+        </form>
+    </div>
+
+    <div class="col-xl-6 col-sm-12">
+        <table class="table">
+            <thead>
+                <th>Product</th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.Cart.CartItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.SellPrice.ConvertToVND() * @item.Quantity</td>
+                    </tr>
+                }
+                <tr style="margin-top:50px">
+                    <td style="color:red; font-weight:600">Total price:</td>
+                    <td>@Model.Cart.Total.ConvertToVND()</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Pending))" style="color: white">
+            <button class="btn btn-danger">Thanh toán trực tiếp</button>
+        </a>
+        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Completed)" style="color: white">
+            <button class="btn btn-danger">Thanh toán bằng VnPay</button>
+        </a>
+
+        <a asp-action="Index" asp-controller="Home" style="color:white">
+            <button class="btn btn-secondary">Trở về</button>
+        </a>
+
+    </div>
+
+</div>

@@ -1,0 +1,71 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model WebShopCore.ViewModel.Order.OrderCrudModel
+@{
+    ViewData["Title"] = "Sửa đơn hàng";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+<div class="row">
+    <div class="col-xl-6 col-sm-12">
+        <form asp-action="Update" asp-controller="Order" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <div class="mb-3">
+                <label>Người mua</label>
+                <select asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))" class="form-select">
+                    <option selected="selected" value="">Chọn người mua</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Trạng thái đơn hàng</label>
+                <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="form-select" >
+                    <option selected="selected" value="">Chọn trạng thái đơn hàng</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Trạng thái thanh toán</label>
+                <select asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()" class="form-select">
+                    <option selected="selected" value="">Chọn trạng thái thanh toán</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Trạng thái vận chuyển</label>
+                <select asp-for="ShippingStatus" asp-items="Html.GetEnumSelectList<ShippingStatus>()" class="form-select">
+                    <option selected="selected" value="">Chọn trạng thái vận chuyển</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Địa chỉ</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="col-xl-6 col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Mã sản phẩm</th>
+                            <th scope="col">Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var orderItem in Model.OrderItems){
+                            <tr>
+                                <td>@orderItem.Product.Name</td>
+                                <td>@orderItem.Product.Code</td>
+                                <td>@(String.Format(info, "{0:c}", orderItem.PriceTotal))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Trở về</a>
+</div>

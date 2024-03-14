@@ -1,0 +1,72 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model List<WebShopCore.ViewModel.Order.OrderViewModel>
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    ViewBag.active = "7";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+<div>
+    <form asp-action="Index">
+        <input type="text" name="keyword" placeholder="Từ khóa..."/>
+        <select name="paymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()">
+            <option selected="selected" value="">Trạng thái thanh toán</option>
+        </select>
+        <select name="orderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()">
+            <option selected="selected" value="">Trạng thái đơn hàng</option>
+        </select>
+        <select name="shippingStatus" asp-items="Html.GetEnumSelectList<ShippingStatus>()">
+            <option selected="selected" value="">Trạng thái vận chuyển</option>
+        </select>
+        <button type="submit">Tìm</button>
+    </form>
+</div>
+<a asp-action="Create" asp-controller="Order">Tạo mới đơn hàng</a>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Địa chỉ</th>
+                <th>Sản phẩm</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái đơn hàng</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Trạng thái vận chuyển</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>@item.Code</td>
+                        <td>@item.Address</td>
+                        <td>
+                            @if(item.OrderItems != null && item.OrderItems.Count() > 0)
+                            {
+                                @foreach(var orderItem in item.OrderItems)
+                                {
+                                    <p>@orderItem.Product.Name</p>
+                                }
+                            }
+                        </td>
+                        <td>@(String.Format(info, "{0:c}", @item.Total))</td>
+                        <td>@item.OrderStatusDisplay</td>
+                        <td>@item.PaymentStatusDisplay</td>
+                        <td>@item.ShippingStatusDisplay</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-orderId="@item.OrderId">Xóa</a>
+                            <a asp-action="Update" asp-route-orderId="@item.OrderId">Sửa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <div>Không có dữ liệu</div>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,64 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model WebShopCore.ViewModel.Order.OrderCrudModel
+@{
+    ViewData["Title"] = "Tạo mới đơn hàng";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<div>
+    <form asp-action="Create" asp-controller="Order" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" id="productIds" asp-for="ProductIds" />
+        <div class="form-group">
+            <label>Người mua</label>
+            <select class="form-select" asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))">
+                <option selected> Chọn người mua</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Trạng thái đơn hàng</label>
+            <select class="form-select" asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()">
+                <option selected> Chọn trạng thái đơn hàng</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Trạng thái vận chuyển</label>
+            <select class="form-select" asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()">
+                <option selected>Chọn trạng thái vận chuyển</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Địa chỉ</label>
+            <input asp-for="Address" placeholder="Nhập địa chỉ" class="form-control"/>
+        </div>
+        <br />
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Tên</th>
+                        <th scope="col">Mã sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var product in Model.ListProductViewModel)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>@product.Code</td>
+                            <td>@(String.Format(info, "{0:c}", product.SellPrice))</td>
+                            <td>
+                                <div class="form-group checkbox">
+                                    <input asp-for="ProductIds" value="@product.ProductId" type="checkbox"/>
+                                    <label>@product.ProductId</label>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<WebShopCore.ViewModel.Coupon.CouponViewModel>
+@{
+    ViewData["Title"] = "Mã khuyến mãi";
+    ViewBag.active = "6";
+}
+<a asp-action="Create" asp-controller="Coupon">Tạo coupon</a>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Mã khuyến mãi</th>
+                <th scope="col">Mã khuyến mãi</th>
+                <th scope="col">Thời gian bắt đầu</th>
+                <th scope="col">Thời gian kết thúc</th>
+                <th scope="col">Loại giảm giá</th>
+                <th scope="col">Lượt sử dụng tối đa</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Cập nhật lúc</th>
+                <th scope="col">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var coupon in Model)
+                {
+                    <tr>
+                        <th scope="row">@coupon.Id</th>
+                        <td style="max-width: 100px">@coupon.Name</td>
+                        <td>@coupon.Code</td>
+                        <td>@coupon.TimeStart</td>
+                        <td>@coupon.TimeEnd</td>
+                        <td>@coupon.CouponPriceTypeDisplay</td>
+                        <td>@coupon.LimitationTimes</td>
+                        <td>@(coupon.IsActive ? "Hoạt động" : "Không hoạt động")</td>
+                        <td>@coupon.UpdatedAt</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@coupon.Id">Delete</a> |
+                            <a asp-action="Edit" asp-route-id="@coupon.Id">Edit</a> |
+                            <a asp-action="SetStatus" asp-route-id="@coupon.Id">Change Status</a> |
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
