@@ -140,6 +140,7 @@ namespace WebShopEndUser.Controllers
                     {
                         UserName = model.UserName,
                         Email = model.Email!.Trim().ToLower(),
+                        UserGuid = Guid.NewGuid(),
                         Name = model.Name!.Trim(),
                         BirthDay = model.BirthDay,
                         Gender = model.Gender,
