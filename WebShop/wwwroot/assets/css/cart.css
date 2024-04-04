@@ -1,0 +1,76 @@
+.home-cart{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.home-cart--heading{
+    background-color: white;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+    font-size: 0.9rem;   
+    color: #666; 
+}
+.home-cart-item{
+    display: block;
+}
+
+.home-cart-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+    margin-top: 10px;
+    min-height: 130px;
+    background-color: white;
+}
+
+/* Tổng cộng */
+.home-cart-total{
+    margin-top: 40px;
+    width: 400px;
+    padding: 20px 20px 0 0;
+    border-top: 1px solid #999; 
+}
+
+.home-cart-total--lable{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #999; 
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+
+}
+.home-cart-total--lable span{
+    color: red;
+    font-weight: 400;
+}
+
+.home-cart-item-img{
+    height: 100px;
+    margin-left: -20px;
+    border: 1px solid black;
+}
+
+.home-cart-item__icon{
+    color: #dc3545;
+    text-decoration: none;
+}
+
+.home-cart-item__input{
+    width: 50px;
+    text-align: center;
+}
+.home-cart-item-lable{
+    overflow: hidden;                                   /*nếu dài quá ẩn bớt chữ*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.home-cart-total-btn{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}

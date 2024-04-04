@@ -2,70 +2,88 @@
 @model WebShopCore.ViewModel.Order.OrderCrudModel
 @{
     ViewData["Title"] = "Sửa đơn hàng";
+    Layout = "_HomeAdminLayout";
     var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
 }
-<div class="row">
-    <div class="col-xl-6 col-sm-12">
-        <form asp-action="Update" asp-controller="Order" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OrderId" />
-            <div class="mb-3">
-                <label>Người mua</label>
-                <select asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))" class="form-select">
-                    <option selected="selected" value="">Chọn người mua</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Trạng thái đơn hàng</label>
-                <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="form-select" >
-                    <option selected="selected" value="">Chọn trạng thái đơn hàng</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Trạng thái thanh toán</label>
-                <select asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()" class="form-select">
-                    <option selected="selected" value="">Chọn trạng thái thanh toán</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Trạng thái vận chuyển</label>
-                <select asp-for="ShippingStatus" asp-items="Html.GetEnumSelectList<ShippingStatus>()" class="form-select">
-                    <option selected="selected" value="">Chọn trạng thái vận chuyển</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Địa chỉ</label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
 
-            <div class="col-xl-6 col-sm-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Tên</th>
-                            <th scope="col">Mã sản phẩm</th>
-                            <th scope="col">Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(var orderItem in Model.OrderItems){
-                            <tr>
-                                <td>@orderItem.Product.Name</td>
-                                <td>@orderItem.Product.Code</td>
-                                <td>@(String.Format(info, "{0:c}", orderItem.PriceTotal))</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<div class="admin__form">
+    <form asp-action="Update" asp-controller="Order" method="post" class="admin__form-form">
+        <h2>Sửa đơn hàng</h2>
+        <input type="hidden" asp-for="OrderId" />
 
-<div>
-    <a asp-action="Index">Trở về</a>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Người mua:</div>
+            <select asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))" class="category-search__select">
+                <option selected> Chọn người mua</option>
+            </select>
+        </div>
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái đơn hàng:</div>
+            <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="category-search__select">
+                <option selected> Chọn trạng thái đơn hàng</option>
+            </select>
+        </div>
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái thanh toán:</div>
+            <select asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()" class="category-search__select">
+                <option selected>Chọn trạng thái thanh toán</option>
+            </select>
+        </div>
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái vận chuyển:</div>
+            <select asp-for="ShippingStatus" asp-items="Html.GetEnumSelectList<ShippingStatus>()" class="category-search__select">
+                <option selected> Chọn trạng thái vận chuyển</option>
+            </select>
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Địa chỉ:</div>
+            <input asp-for="Address" class="admin__form-input" required />
+        </div>
+
+
+        <div class="grid category-form__inside">
+            <div class="grid__row category-form__heading">
+                <div class="grid__column-2">
+                </div>
+                <div class="grid__column-2">
+                    <span>Tên</span>
+                </div>
+                <div class="grid__column-2">
+                    <span>Mã sản phẩm</span>
+                </div>
+                <div class="grid__column-2">
+                    <span>Giá</span>
+                </div>
+            </div>
+            @foreach (var orderItem in Model.OrderItems)
+            {
+                <div class="grid__row category-form__item">
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@orderItem.Product.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@orderItem.Product.Code</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@(String.Format(info, "{0:c}", orderItem.PriceTotal))</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="Order" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
+
 </div>

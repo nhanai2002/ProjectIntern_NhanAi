@@ -1,17 +1,17 @@
 ﻿@model WebShopCore.ViewModel.User.LoginViewModel
 @{
     ViewData["Title"] = "Login";
+    Layout = "_AuthLayout";
 }
-
-
 
 
 <body>
     <div class="wrapper">
         <div class="title">
-            Login Form
+            Đăng nhập
         </div>
         <form asp-controller="Auth" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="field">
                 <input asp-for="UserName" required>
                 <label>Username</label>

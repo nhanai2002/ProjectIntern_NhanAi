@@ -4,62 +4,56 @@
 @{
     ViewData["Title"] = "Kiểm tra thanh toán";
 }
-<h1>Thông tin thanh toán</h1>
-<div class="row">
-    <div class="col-xl-6 col-sm-12">
-        <form>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="mb-3 col-sm-6">
-                    <label>Tên</label>
-                    <input asp-for="Name" readonly class="form-control" />
-                </div>
-                <div class="mb-3 col-sm-6">
-                    <label>Số điện thoại</label>
-                    <input asp-for="Phone" readonly class="form-control" />
-                </div>
-            </div>
-            <div class="mb-3">
-                <label>Địa chỉ</label>
-                <input asp-for="Address" readonly class="form-control" />
-            </div>
-        </form>
+
+<div class="app_container">
+    <div class="app_container-lable">
+        <span class="app_container-lable-msg">XÁC NHẬN THANH TOÁN</span>
     </div>
+    <div class="app_container__checkout">
+        <div class="checkout__product">
+            <div class="app_container__checkout-heading">Sản phẩm</div>
 
-    <div class="col-xl-6 col-sm-12">
-        <table class="table">
-            <thead>
-                <th>Product</th>
-                <th>Total</th>
-            </thead>
-            <tbody>
-                @foreach(var item in Model.Cart.CartItems)
-                {
-                    <tr>
-                        <td>@item.Product.Name</td>
-                        <td>@item.Product.SellPrice.ConvertToVND() * @item.Quantity</td>
-                    </tr>
-                }
-                <tr style="margin-top:50px">
-                    <td style="color:red; font-weight:600">Total price:</td>
-                    <td>@Model.Cart.Total.ConvertToVND()</td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="checkout__product-item">
+                <div class="checkout__product-item-lable">Tên: </div>
+                <div class="checkout__product-item-name">@Model.Name </div>
+            </div>
+            <div class="checkout__product-item">
+                <div class="checkout__product-item-lable">Số điện thoại: </div>
+                <div class="checkout__product-item-name">@Model.Phone </div>
+            </div>
+            <div class="checkout__product-item">
+                <div class="checkout__product-item-lable">Địa chỉ: </div>
+                <div class="checkout__product-item-name">@Model.Address </div>
+            </div>
+        </div>
+
+        <div class="checkout__inform">
+            <div class="app_container__checkout-heading">Hóa đơn</div>
+
+            <div class="checkout__inform-heading">
+                <div class="checkout__inform-heading-lable">Sản phẩm </div>
+                <div class="checkout__inform-heading-lable">Tổng cộng </div>
+            </div>
+            @foreach (var item in Model.Cart.CartItems)
+            {
+                <div class="checkout__inform-item">
+                    <div class="checkout__inform-item-lable">@item.Product.Name</div>
+                    <div class="checkout__inform-item-name">@item.Product.SellPrice.ConvertToVND() * @item.Quantity</div>
+                </div>
+            }
+            <div class="checkout__total">
+                <div>Tổng cộng:</div>
+                <div class="checkout__total-price">@Model.Cart.Total.ConvertToVND()</div>
+            </div>
+
+
+        </div>
+
     </div>
-
-    <div class="form-group">
-        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Pending))" style="color: white">
-            <button class="btn btn-danger">Thanh toán trực tiếp</button>
-        </a>
-        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Completed)" style="color: white">
-            <button class="btn btn-danger">Thanh toán bằng VnPay</button>
-        </a>
-
-        <a asp-action="Index" asp-controller="Home" style="color:white">
-            <button class="btn btn-secondary">Trở về</button>
-        </a>
-
+    <div class="btn__checkout">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-comback">Trở về</a>
+        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Pending))" class="btn btn-checkout">Thanh toán trực tiếp</a>
+        <a asp-action="SettleUp" name="payment" asp-route-payment="@((int)SysEnum.PaymentStatus.Completed)" class="btn btn-apply">Thanh toán VnPay</a>
     </div>
 
 </div>

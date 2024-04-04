@@ -4,42 +4,66 @@
     ViewData["Title"] = "Lịch sử mua hàng";
 }
 
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Mã đơn hàng</td>
-                <td>Ngày đặt hàng</td>
-                <td>Sản phẩm</td>
-                <td>Tổng cộng</td>
-                <td>Trạng thái đơn hàng</td>
-                <td>Trạng thái vận chuyển</td>
-            </tr>
-        </thead>
-        <tbody>
-            @if(Model != null)
+<div class="app_container">
+    <div class="app_container-lable">
+        <span class="app_container-lable-msg">LỊCH SỬ MUA HÀNG</span>
+    </div>
+    <div class="grid">
+        <div class="home-cart">
+            <div class="grid__row home-cart--heading">
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Mã đơn hàng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Ngày đặt hàng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Sản phẩm</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Tổng cộng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Trạng thái đơn hàng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Trạng thái vận chuyển</span>
+                </div>
+            </div>
+
+            @if (Model != null)
             {
-                foreach(var order in Model)
-                {
-                    <tr>
-                        <td>@order.Code</td>
-                        <td>@order.CreatedAt</td>
-                        <td>
-                            @foreach(var orderItem in order.OrderItems)
-                            {
-                                <div>@orderItem.Product.Name</div>
-                            }
-                        </td>
-                        <td>@order.Total.ConvertToVND()</td>
-                        <td>@order.OrderStatusDisplay</td>
-                        <td>@order.ShippingStatusDisplay</td>
-                    </tr>
-                }
+                <div class="grid__row home-cart-list">
+
+                    @foreach (var order in Model)
+                    {
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">@order.Code</span>
+                        </div>
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">@order.CreatedAt</span>
+                        </div>
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">
+                                @foreach (var orderItem in order.OrderItems)
+                                {
+                                    <div>@orderItem.Product.Name</div>
+                                }
+                            </span>
+                        </div>
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">@order.Total.ConvertToVND()</span>
+                        </div>
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">@order.OrderStatusDisplay</span>
+                        </div>
+                        <div class="grid__column-2">
+                            <span class="home-cart-item">@order.ShippingStatusDisplay</span>
+                        </div>                        
+                    }
+
+                </div>
             }
-            else
-            {
-                <div>Lịch sử mua hàng trống</div>
-            }
-        </tbody>
-    </table>
+        </div>
+    </div>
 </div>

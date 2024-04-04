@@ -129,15 +129,16 @@ namespace WebShop.Controllers
                 .ThenInclude(x=>x.Category)
                 .FirstOrDefault();
 
-            var category = product.ProductCategories
+            var categorySelected = product.ProductCategories
                 .Select(x => _mapper.Map<CategoryViewModel>(x.Category))
                 .ToList();
+            var category = _uow.CategoryRepository.BuildQuery(x => !x.IsDeleted).Select(x => _mapper.Map<CategoryViewModel>(x)).ToList();
             if (category == null) 
                 return View("Error", "Lỗi");
 
             var rs = _mapper.Map<ProductCrudModel>(product);
             rs.ListCategoryViewModel = category;
-            rs.SelectedCategories = rs.ListCategoryViewModel.Select(x => x.CategoryId).ToArray();
+            rs.SelectedCategories = categorySelected.Select(x => x.CategoryId).ToArray();
 
             return View(rs);
         }

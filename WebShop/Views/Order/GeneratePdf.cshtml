@@ -1,0 +1,97 @@
+﻿
+@{
+    Layout = "";
+    var bill = (Order)ViewBag.hoaDon;
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="~/css/bill_css.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="invoice-title">
+                    <h2>Invoice</h2><h3 class="pull-right">Order # @bill.Code</h3>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <address>
+                            <strong>Khách hàng:</strong><br>
+                            @bill.User.Name<br>                              
+                            @bill.User.Address<br>
+                            @bill.User.Phone<br>
+                        </address>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <address>
+                            <strong>Đặt hàng lúc:</strong><br>
+                            @bill.OrderDate
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Sản phẩm</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Tên sản phẩm</strong></td>
+                                        <td class="text-center"><strong>Giá</strong></td>
+                                        <td class="text-center"><strong>Số lượng</strong></td>
+                                        <td class="text-right"><strong>Tổng cộng</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var item in bill.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>@item.Product.Name</td>
+                                            <td class="text-center">@(String.Format(info, "{0:c}", item.Product.SellPrice))</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-right">@(String.Format(info, "{0:c}", item.PriceTotal))</td>
+                                        </tr>
+                                    }
+                                    
+                                    <tr>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line text-center"><strong>Tổng cộng</strong></td>
+                                        <td class="thick-line text-right">@(String.Format(info, "{0:c}",bill.Total))</td>
+                                    </tr>       
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

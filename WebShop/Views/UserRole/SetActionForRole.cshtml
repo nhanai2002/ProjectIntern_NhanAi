@@ -1,35 +1,47 @@
 ﻿@model WebShopCore.ViewModel.UserRole.RoleCrudModel
 @{
     ViewData["Title"] = "Set action for role";
+    Layout = "_HomeAdminLayout";
 }
 
-<h1>Set action for role</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SetActionForRole" asp-controller="UserRole" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RoleId" />
-            <label>Role : </label>
-            <input asp-for="Name" style="border: none;" readonly/>
-            @foreach (var controller in Model.ctrls)
-            {
-                <h2>@controller.DisplayName</h2>
+<div class="admin__form">
+    <form asp-action="SetActionForRole" asp-controller="UserRole" method="post" class="admin__form-form">
+        <h2>Phân quyền cho từng chức năng</h2>
+        <input type="hidden" asp-for="RoleId" />
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Quyền (Vai trò):</div>
+            <input asp-for="Name" readonly class="admin__form-input" />
+        </div>
 
-                foreach (var action in controller.Actions)
+        <div class="grid category-form__inside">
+            <div class="grid__row checkbox-role__row">
+                @foreach (var controller in Model.ctrls)
                 {
-
-                    <div>
-                        <input type="checkbox" id="@action.ActionName" name="SelectedActions" @(action.isChecked ? "checked" : "") value="@controller.ControllerName.@action.ActionName">
-                        <label for="@action.ActionName">@action.DisplayName</label>
-                    </div>
+                        <div class="grid__half-width checkbox-role__row-item">
+                            <h2>@controller.DisplayName</h2>
+                            @foreach (var action in controller.Actions)
+                            {
+                                <div class="checkbox-list">
+                                    <input type ="checkbox" id="@action.ActionName" name="SelectedActions" @(action.isChecked ? "checked" : "") value="@controller.ControllerName.@action.ActionName" />
+                                    <label class="checkbox-list__lable" for="@action.ActionName">@action.DisplayName</label>
+                                </div>
+                            }
+                        </div>
                 }
-            }
+                </div>
+        </div>
 
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="UserRole" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
 
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
 </div>
+
+

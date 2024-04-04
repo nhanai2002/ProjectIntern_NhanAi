@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
@@ -21,10 +25,13 @@ namespace WebShop.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public OrderController(IUnitOfWork uow, IMapper mapper)
+        private IWebHostEnvironment _env;
+
+        public OrderController(IUnitOfWork uow, IMapper mapper, IWebHostEnvironment env)
         {
             _uow = uow;
             _mapper = mapper;
+            _env = env;
         }
         [Display(Name = "Xem danh sách đơn hàng")]
 
@@ -33,7 +40,9 @@ namespace WebShop.Controllers
             var data = _uow.OrderRepository.BuildQuery(x => !x.IsDeleted);
             if(keyword != null && keyword != "")
             {
-                data = data.Where(x => EF.Functions.Like(x.Code!, $"{keyword}"));
+                data = data.Where(x => EF.Functions.Like(x.Code!, $"%{keyword}%")
+                                    || EF.Functions.Like(x.Name! , $"%{keyword}%")
+                                    || EF.Functions.Like(x.Address!, $"%{keyword}%"));
             }
             if(paymentStatus != null)
             {
@@ -63,7 +72,8 @@ namespace WebShop.Controllers
             && x.IsActive)
                 .Select(x => _mapper.Map<UserViewModel>(x))
                 .ToList();
-            model.ListProductViewModel = _uow.ProductRepository.BuildQuery(x => !x.IsActive && x.Quantity > 0)
+
+            model.ListProductViewModel = _uow.ProductRepository.BuildQuery(x => x.IsActive && x.Quantity > 0)
                 .Select(x => _mapper.Map<ProductViewModel>(x))
                 .ToList();
             return View(model);
@@ -90,7 +100,8 @@ namespace WebShop.Controllers
                 };
                 _uow.OrderRepository.Add(order);
                 await _uow.CommitAsync();
-                foreach (var id in model.ProductIds)
+                var productIdsData = model.ProductIds.Split(",");
+                foreach (var id in productIdsData)
                 {
                     var convertToInt = Int32.Parse(id);
                     var product = _uow.ProductRepository.GetById(convertToInt);
@@ -106,7 +117,7 @@ namespace WebShop.Controllers
                             OrderId = order.OrderId
                         };
                         _uow.OrderItemRepository.Add(orderItem);
-                        orderItem.PriceTotal += product.SellPrice;
+                        order.Total += product.SellPrice;
                     }
                 }
                 await _uow.CommitAsync();
@@ -166,6 +177,56 @@ namespace WebShop.Controllers
             }
             await _uow.CommitAsync();
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> GeneratePdf(long orderId)
+        {
+            var order = _uow.OrderRepository
+                .BuildQuery(x => x.OrderId == orderId)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                .FirstOrDefault();
+
+            if(order == null)
+            {
+                return View("Error", "Lỗi ko tìm thấy đơn hàng");
+            }
+
+            string duongDanThuMuc = @"D:\HoaDon\";
+            if (!Directory.Exists(duongDanThuMuc))
+            {
+                Directory.CreateDirectory(duongDanThuMuc);
+            }
+
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+            if (order != null)
+            {
+                var user = _uow.UserRepository.GetById(order.CreateByUserId.Value);
+                order.User = user;
+                var webRoot = _env.WebRootPath;
+                var orderTemplate = Path.Combine(webRoot, "template/order_template.html");
+                var orderTemplateBody = System.IO.File.ReadAllText(orderTemplate);
+                string sp = "";
+                foreach (var item in order.OrderItems)
+                {
+                    var sellprice = String.Format(info, "{0:c}", item.Product.SellPrice);
+                    var priceTotal = String.Format(info, "{0:c}", item.PriceTotal);
+                    sp += $"<tr><td>{item.Product.Name}</td><td class=\"text-center\">{sellprice}</td><td class=\"text-center\">{item.Quantity}</td><td class=\"text-right\">{priceTotal}</td></tr>";
+                }
+                orderTemplateBody = orderTemplateBody
+                    .Replace("{{Code}}", order.Code!.ToString())
+                    .Replace("{{Name}}", user.Name)
+                    .Replace("{{Address}}", order.Address)
+                    .Replace("{{Phone}}", user.Phone)
+                    .Replace("{{OrderDate}}", order.OrderDate.ToString())
+                    .Replace("{{foreach}}", sp);
+
+                var outputPath = @"D:\HoaDon\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "__" + order.Code +  ".pdf";
+                var renderer = new HtmlToPdf();
+                renderer.RenderHtmlAsPdf(orderTemplateBody).SaveAs(outputPath);
+            }
+            return RedirectToAction("Index");
+
         }
     }
 }

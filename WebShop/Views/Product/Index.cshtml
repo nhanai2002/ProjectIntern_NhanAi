@@ -2,62 +2,83 @@
 
 @{
     ViewData["Title"] = "Index Product";
-    ViewBag.active = "3";
+    Layout = "_HomeAdminLayout";
+    ViewBag.active = "4";
     var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
-
 }
 
-<div>
-    <table class="table">
-        <a asp-action="Create" asp-controller="Product" style="margin-top:5px; display:block">
-            <button class="btn btn-danger">Thêm sản phẩm</button>
-        </a>
-        <br />
 
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Mã sản phẩm</th>
-                @*<th scope="col">Hình ảnh</th>*@
-                <th scope="col">Giá</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Ngày tạo</th>
-                <th scope="col">Trạng thái</th>
-                <th scope="col">Cập nhật lúc</th>
-                <th scope="col">Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null)
-                @foreach (var product in Model)
-                {
-                    <tr>
-                        <th scope="row">@product.ProductId</th>
-                        <td>@product.Name</td>
-                        <td>@product.Code</td>
-                        <td>@(String.Format(info, "{0:c}", product.BasePrice))</td>
-                        <td>@product.Description</td>
-                        <td>@product.CreatedAt</td>
-                        <td>@(product.IsActive ? "Hoạt động" : "Không hoạt động")</td>
-                        <td>@product.UpdatedAt</td>
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@product.ProductId">
+<div class="category-content-list category-content-list--active">
+    <div class="category-content__heading">
+        Quản lý sản phẩm
+    </div>
+    <div class="category-content__btn">
+        <a asp-action="Create" asp-controller="Product" class="btn btn-checkout">
+            <i class="category-content-icon fa-solid fa-plus"></i>
+            Thêm sản phẩm
+        </a>
+    </div>
+    <div class="grid">
+        <div class="grid__row category-content__lable">
+            <div class="grid__column-2">
+                <span>#</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Tên</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Mã sản phẩm</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Giá</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Trạng thái</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Thao tác</span>
+            </div>
+        </div>
+
+
+        @if(Model != null)
+        {
+            @foreach (var product in Model)
+            {
+                <div class="grid__row category-content__item">
+                    <div class="grid__column-2">
+                        <span>@product.ProductId</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-content__item-name">@product.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@product.Code</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@(String.Format(info, "{0:c}", product.BasePrice))</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@(product.IsActive ? "Hoạt động" : "Không hoạt động")</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>
+                            <a asp-action="Delete" asp-route-id="@product.ProductId" title="Xóa">
                                 <i class="fa-solid fa-x"></i>
                             </a>
-                            <a asp-action="Edit" asp-route-id="@product.ProductId">
+                            <a asp-action="Edit" asp-route-id="@product.ProductId" title="Sửa">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
-                            <a asp-action="ProductImages" asp-controller="Image" asp-route-productId="@product.ProductId">
+                            <a asp-action="ProductImages" asp-controller="Image" asp-route-productId="@product.ProductId" title="Hình ảnh">
                                 <i class="fa-regular fa-image"></i>
                             </a>
-                            <a asp-action="SetStatus" asp-controller="Product" asp-route-productId="@product.ProductId">Set status</a> 
-                        </td>
-                    </tr>
-                }
+                            <a asp-action="SetStatus" asp-controller="Product" asp-route-productId="@product.ProductId" title="Đổi trạng thái">
+                                <i class="fa-regular fa-bolt-lightning"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
             }
-            
-        </tbody>
-    </table>
-
+        }
+    </div>
 </div>

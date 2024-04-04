@@ -1,0 +1,31 @@
+﻿@using WebShopCore.Helper
+@{
+    var user = Context.Session.GetCurrentAuthentication();
+}
+
+@if(user != null){
+    <div class="header__cart">
+        <div class="header__cart-wrap">
+            <a asp-action="Index" asp-controller="Cart">
+                 <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
+            </a>
+        </div>
+    </div>
+}
+else{
+    <div class="header__cart">
+        <div class="header__cart-wrap">
+            <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
+            <!-- Có sp -->
+            <!-- <span class="header__cart-notice">3</span> -->
+
+            <div class="header__cart-list">
+                <!-- Chưa có sp -->
+                <img src="~/assets/image/no_cart.jpg" class="header__cart-no-cart-img">
+                <span class="header__cart-no-cart-lable">Chưa có sản phẩm</span>
+
+            </div>
+        </div>
+    </div>
+
+}

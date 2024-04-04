@@ -2,74 +2,68 @@
 
 @{
     ViewData["Title"] = "EditProduct";
-    Layout = "_Layout";
+    Layout = "_HomeAdminLayout";
 }
 
-<h1>EditProduct</h1>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" asp-controller="Product" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProductId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
-                <input asp-for="Code" class="form-control" />
-                <span asp-validation-for="Code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label>Trạng thái sản phẩm </label>
-                <select class="form-select" asp-for="Status" asp-items="Html.GetEnumSelectList<SysEnum.ProductStatus>()">
-                    <option selected="selected" value="">Chọn trạng thái sản phẩm</option>
-                </select>
-            </div>
+<div class="admin__form">
+    <form asp-action="Edit" asp-controller="Product" method="post" class="admin__form-form">
+        <input type="hidden" asp-for="ProductId" />
+        <h2>Sửa sản phẩm</h2>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Tên:</div>
+            <input asp-for="Name" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Mã sản phẩm:</div>
+            <input asp-for="Code" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái sản phẩm:</div>
+            <select class="category-search__select" asp-for="Status" asp-items="Html.GetEnumSelectList<SysEnum.ProductStatus>()">
+                <option selected="selected" value="">Chọn trạng thái sản phẩm</option>
+            </select>
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Mô tả:</div>
+            <input asp-for="Description" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Số lượng:</div>
+            <input asp-for="Quantity" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Giá gốc:</div>
+            <input asp-for="BasePrice" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Giá đã giảm:</div>
+            <input asp-for="SellPrice" class="admin__form-input" />
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BasePrice" class="control-label"></label>
-                <input asp-for="BasePrice" class="form-control" />
-                <span asp-validation-for="BasePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SellPrice" class="control-label"></label>
-                <input asp-for="SellPrice" class="form-control" />
-                <span asp-validation-for="SellPrice" class="text-danger"></span>
-            </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Danh mục sản phẩm:</div>
+            <select asp-for="SelectedCategories" asp-items="@(new SelectList(Model.ListCategoryViewModel, "CategoryId", "Name"))"
+                    multiple="multiple" class="category-search__select js-example-basic-multiple">
+            </select>
+        </div>
 
-            <div class="form-group">
-                <label>Danh mục sản phẩm</label>
-                <select style="width:400px" asp-for="SelectedCategories" class="js-example-basic-multiple" asp-items="@(new SelectList(Model.ListCategoryViewModel, "CategoryId", "Name"))">
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="Product" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 

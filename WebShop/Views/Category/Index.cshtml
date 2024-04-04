@@ -2,32 +2,71 @@
 
 @{
     ViewData["Title"] = "Category Index";
-    ViewBag.active = "4";
+    Layout = "_HomeAdminLayout";
+    ViewBag.active = "5";
 }
 
-<div style="margin-left:30px">
-    <a asp-action="Create" asp-controller="Category" style="margin-top:5px; display:block">
-        <button class="btn btn-danger">Thêm loại</button>
-    </a>
-    <br />
-    <table class="table">
-        <thead>
-            <tr>Tên loại</tr>
-        </thead>
-        <tbody>
-            @if (Model != null){
+
+<div class="category-content-list category-content-list--active">
+    <div class="category-content__heading">
+        Quản lý Thể loại
+    </div>
+    <div class="category-content__btn">
+        <a asp-action="Create" asp-controller="Category" class="btn btn-checkout">
+            <i class="category-content-icon fa-solid fa-plus"></i>
+            Thêm thể loại
+        </a>
+    </div>
+    <div class="grid">
+        <div class="grid__row category-content__lable">
+            <div class="grid__column-2">
+                <span>Tên loại</span>
+            </div>
+            <div class="grid__column-2">
+            </div>
+            <div class="grid__column-2">
+            </div>
+            <div class="grid__column-2">
+                <span>Thao tác</span>
+            </div>
+        </div>
+
+
+        @if (Model != null)
+        {
                 @foreach (var category in Model)
                 {
-                    <tr>
-                        <td>@category.Name</td>
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@category.CategoryId">Delete</a> |
-                            <a asp-action="Edit" asp-route-id="@category.CategoryId">Edit</a> |
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+                <div class="grid__row category-content__item">
 
+                    <div class="grid__column-2 category-content__item-name">
+                        <span>@category.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                        <span>
+                            <a asp-action="Delete" asp-route-id="@category.CategoryId">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@category.CategoryId">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        </span>
+                    </div>
+                    
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                    </div>
+                </div>
+
+                }
+        }
+        else
+        {
+
+        }
+    </div>
 </div>

@@ -17,6 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
+IronPdf.License.LicenseKey = builder.Configuration["IronPdf:LicenseKey"];
 
 
 builder.Services.AddScoped<LoginRequired>();

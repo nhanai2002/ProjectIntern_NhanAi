@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "_MainAdminLayout";
+    string active = ViewBag.active;
+}
+
+<div class="category">
+    <ul class="category-list">
+        <li class="category-item  @((active == "1") ? "category-item--active" :"" )">
+            <a asp-action="Index" asp-controller="Home" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="category-item  @((active == "2") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="User" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-user"></i>
+                Quản lý User
+            </a>
+        </li>
+        <li class="category-item @((active == "3") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="UserRole" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-pen-ruler"></i>
+                Quản lý Vai trò
+            </a>
+        </li>
+        <li class="category-item @((active == "4") ? "category-item--active" :"" )">
+            <a asp-action="Index" asp-controller="Product" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-cookie-bite"></i>
+                Quản lý Sản phẩm
+            </a>
+        </li>
+        <li class="category-item @((active == "5") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Category" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-cookie"></i>
+                Quản lý Loại sản phẩm
+            </a>
+        </li>
+        <li class="category-item @((active == "6") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Coupon" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-ticket"></i>
+                Quản lý Coupon
+            </a>
+        </li>
+        <li class="category-item @((active == "7") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Order" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-file-invoice-dollar"></i>
+                Quản lý Đơn hàng
+            </a>
+        </li>
+
+    </ul>
+    <div class="category-content">
+        @RenderBody()
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+}
+
+@await RenderSectionAsync("Scripts", required: false)
+

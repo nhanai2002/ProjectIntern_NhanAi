@@ -1,0 +1,49 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model WebShopCore.ViewModel.User.UserCrudModel
+@{
+    ViewData["Title"] = "Thông tin về người dùng";
+    Layout = "_UserProfileLayout";
+    ViewBag.activeAuth = "1";
+}
+
+
+<div class="tab-content">
+    <form asp-action="UserProfile" asp-controller="Setting" method="post" class="tab-pane active">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="UserId" />
+        <h2>
+            <i class="fa-solid fa-forward"></i>
+            Thông tin cá nhân
+        </h2>
+        <div class="tab-pane-item">
+            <div class="tab-pane-item-lable">Tài khoản:</div>
+            <input asp-for="UserName" readonly class="tab-pane-item-input" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="tab-pane-item">
+            <div class="tab-pane-item-lable">Tên:</div>
+            <input asp-for="Name" class="tab-pane-item-input" />
+        </div>
+        <div class="tab-pane-item">
+            <div class="tab-pane-item-lable">Số điện thoại:</div>
+            <input asp-for="Phone" class="tab-pane-item-input" />
+        </div>
+        <div class="tab-pane-item">
+            <div class="tab-pane-item-lable">Địa chỉ:</div>
+            <input asp-for="Address" class="tab-pane-item-input" />
+        </div>
+        <div class="tab-pane-item">
+            <div class="tab-pane-item-lable">Giới tính:</div>
+            <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="tab-pane-item-input">
+                <option selected="selected" value="">Chọn giới tính</option>
+            </select>
+        </div>
+
+        <div class="btn__account">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-comback">Trở về</a>
+            <button type="submit" value="Cập nhật" class="btn btn-apply">Cập nhật</button>
+        </div>
+
+    </form>
+
+</div>

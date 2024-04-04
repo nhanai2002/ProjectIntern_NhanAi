@@ -1,0 +1,163 @@
+﻿.home-cart {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.home-cart--heading {
+    background-color: white;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.home-cart-item {
+    display: block;
+}
+
+.home-cart-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+    margin-top: 10px;
+    min-height: 130px;
+    background-color: white;
+}
+
+/* Tổng cộng */
+.home-cart-total {
+    margin-top: 40px;
+    width: 400px;
+    padding: 20px 20px 0 0;
+    border-top: 1px solid #999;
+}
+
+.home-cart-total--lable {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #999;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+    .home-cart-total--lable span {
+        color: red;
+        font-weight: 400;
+    }
+
+.home-cart-item__icon {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+.home-cart-item-img {
+    height: 100px;
+    margin-left: -20px;
+}
+.home-cart-item-lable {
+    overflow: hidden; /*nếu dài quá ẩn bớt chữ*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.home-cart-item__input {
+    width: 50px;
+    text-align: center;
+}
+
+
+.home-cart-total-btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Checkout*/
+.app_container__checkout {
+    display: flex;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 0;
+    margin: 5% auto 0;
+    max-width: 720px;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.checkout__product {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    width: 400px;
+    border-right: 1px solid #eee;
+}
+
+.app_container__checkout-heading {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: crimson;
+    padding-bottom: 20px;
+}
+
+.checkout__product-item {
+    display: flex;
+    align-items: baseline;
+    padding: 2px;
+}
+
+.checkout__product-item-lable {
+    min-width: 100px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.checkout__inform {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    width: 320px;
+}
+
+.checkout__inform-heading {
+    display: flex;
+    justify-content: space-around;
+}
+
+.checkout__inform-item {
+    display: flex;
+}
+
+.checkout__inform-item-lable {
+    margin-left: 10px;
+    width: 120px;
+    overflow: hidden; /*nếu dài quá ẩn bớt chữ*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.checkout__inform-item-name {
+    margin-left: 30px;
+}
+.checkout__total {
+    display: flex;
+    margin-top: 10px;
+    padding: 10px 10px 0px 10px;
+    border-top: 1px solid #999;
+}
+
+.checkout__total-price {
+    color: crimson;
+    font-weight: 600;
+    margin-left: 70px;
+}
+.btn__checkout {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

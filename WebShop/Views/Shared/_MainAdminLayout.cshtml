@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="~/assets/css/base.css">
+    <link rel="stylesheet" href="~/assets/css/main.css">
+    <link rel="stylesheet" href="~/assets/css/admin.css">
+    <link rel="stylesheet" href="~/assets/css/account.css">
+    <link rel="stylesheet" href="~/assets/css/cart.css">
+    <link rel="stylesheet" href="~/assets/font/fontawesome-free-6.4.2-web/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+
+        <!-- header -->
+        <header class="header__admin">
+            <partial name="_LoginPartialAdmin"></partial>
+
+        </header>
+
+        <div class="app_container-admin">
+            @RenderBody()
+        </div>
+
+
+
+
+        <!-- footer -->
+        <footer class="footer">
+        </footer>
+
+
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/assets/main.js"></script>
+
+</body>
+</html>

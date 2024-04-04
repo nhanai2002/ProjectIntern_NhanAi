@@ -2,11 +2,12 @@
 @model WebShopCore.ViewModel.User.UserCrudModel
 @{
     ViewData["Title"] = "Register";
+    Layout = "_AuthLayout";
 }
 <body>
     <div class="wrapper">
         <div class="title">
-            Register Form
+            Đăng ký
         </div>
         <form asp-controller="Auth" asp-action="Register" method="post">
             <div class="field">
@@ -25,7 +26,6 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="field">
-                <label>Giới tính</label>
                 <select class="form-select" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
                     <option selected="selected" value="">Chọn giới tính</option>
                 </select>

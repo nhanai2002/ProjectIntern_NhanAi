@@ -3,84 +3,101 @@
     ViewData["Title"] = "Cart";
     var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
 }
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Action</th>
-                <th scope="col">Total</th>
-            </tr>
-        </thead>
-        <tbody>
+
+<!-- container -->
+<div class="app_container">
+    <div class="app_container-lable">
+        <span class="app_container-lable-msg">GIỎ HÀNG</span>
+    </div>
+    <div class="grid">
+        <div class="home-cart">
+            <div class="grid__row home-cart--heading">
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Hình ảnh</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Tên sản phẩm</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Giá</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Số lượng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Tổng cộng</span>
+                </div>
+                <div class="grid__column-2">
+                    <span class="home-cart-item">Thao tác</span>
+                </div>
+            </div>
+
             @if (Model != null)
             {
-                @foreach (var cartItem in Model.CartItems)
-                {
-                    <tr>
-                        @if(cartItem.Product.ProductImages.Count() > 0)
+                <div class="grid__row home-cart-list">
+
+                    @foreach (var cartItem in Model.CartItems)
+                    {
+                        @if (cartItem.Product.ProductImages.Count() > 0)
                         {
-                            var img = cartItem.Product.ProductImages.FirstOrDefault().Image.Url;
-                            <td>
-                                <img style="height: 100px" src="@img">
-                            </td>
-                        }
-                        <td>@cartItem.Product.Name</td>
-                        <td>@(String.Format(info, "{0:c}", cartItem.Product.SellPrice))</td>
-                        <td>
-                            <div>
-                                <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="false">
-                                    <i class="fa fa-minus"></i>
-                                </a>
-                                <input type="number" asp-for="@cartItem.Quantity">
-                                <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="true">
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                            var img = cartItem.Product.ProductImages.FirstOrDefault().Image.Url;                      
+                            <div class="grid__column-2">
+                                <img src="@img" class="home-cart-item home-cart-item-img" />
                             </div>
-                        </td>
-                        <td>
-                            <a asp-action="RemoveCartItem" asp-route-cartItemId="@cartItem.CartItemId">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
-                                    <circle cx="12" cy="12" r="10">
-                                    </circle>
-                                    <line x1="15" y1="9" x2="9" y2="15">
-                                    </line>
-                                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                                </svg>
-                            </a>
-                        </td>
-                        <td>@(String.Format(info, "{0:c}", cartItem.Product.SellPrice*cartItem.Quantity))</td>
-                    </tr>
-                }
+                            <div class="grid__column-2">
+                                <span class="home-cart-item home-cart-item-lable">@cartItem.Product.Name</span>
+                            </div>
+                            <div class="grid__column-2">
+                                <span class="home-cart-item">
+                                    @(String.Format(info, "{0:c}", cartItem.Product.SellPrice))
+                                </span>
+                            </div>
+                            <div class="grid__column-2">
+                                <span class="home-cart-item">
+                                    <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="false" class="home-cart-item__icon">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                    <input type="number" asp-for="@cartItem.Quantity" readonly class="home-cart-item__input">
+                                    <a asp-action="UpdateCartItem" asp-route-cartItemId="@cartItem.CartId" asp-route-isAdd="true" class="home-cart-item__icon">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="grid__column-2">
+                                <span class="home-cart-item">
+                                    @(String.Format(info, "{0:c}", cartItem.Product.SellPrice * cartItem.Quantity))
+                                </span>
+                            </div>
 
+                            <div class="grid__column-2">
+                                <span class="home-cart-item">
+                                    <a asp-action="RemoveCartItem" asp-route-cartItemId="@cartItem.CartItemId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+                                            <circle cx="12" cy="12" r="10">
+                                            </circle>
+                                            <line x1="15" y1="9" x2="9" y2="15">
+                                            </line>
+                                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                                        </svg>
+                                    </a>
+                                </span>
+                            </div>
+                        }
+                    }
 
-                <tr>
-                    <td>Total price : </td>
-                    <td>@(String.Format(info, "{0:c}", Model.Total))</td>
-                </tr>
-                <tr>
-                    <td>
-                        <a asp-action="Index" asp-controller="Home" style="color:white">
-                            <button class="btn btn-secondary">Trở về</button>
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="Checkout" style="color: white">
-                            <button class="btn btn-danger">
-                                Check out
-                            </button>
-                        </a>
-                     </td>
-                </tr>
+                </div>
             }
-            else
-            {
-                <h4>Giỏ hàng trống</h4>
-            }
-        </tbody>
-    </table>
 
+            <div class="home-cart-total">
+                <div class="home-cart-total--lable">
+                    Tổng cộng :
+                    <span>@(String.Format(info, "{0:c}", Model.Total))</span>
+                </div>
+                <div class="home-cart-total-btn">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-comback">Trở về</a>
+                    <a asp-action="Checkout" class="btn btn-checkout">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

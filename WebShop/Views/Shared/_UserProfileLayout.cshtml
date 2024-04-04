@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "_MainAdminLayout";
+    string active = ViewBag.activeAuth;
+}
+
+<div class="app_container">
+
+    <div class="tabs__account">
+        <div class="tabs">
+            <a asp-action="UserProfile" asp-controller="Setting" class="tab-item @((active == "1") ? "active" :"" )">
+                <i class="tab-icon fa-solid fa-user-pen"></i>
+                Thông tin cá nhân
+            </a>
+            <a asp-action="UpdateAvatar" asp-controller="Setting" class="tab-item @((active == "2") ? "active" :"" )">
+                <i class="tab-icon fa-regular fa-image"></i>
+                Đổi ảnh đại diện
+            </a>
+            <a asp-action="ChangePassword" asp-controller="Setting" class="tab-item @((active == "3") ? "active" :"" )">
+                <i class="tab-icon fa-solid fa-key"></i>
+                Đổi mật khẩu
+            </a>
+            <div class="line"></div>
+        </div>
+        @RenderBody()
+
+    </div>
+
+
+</div>

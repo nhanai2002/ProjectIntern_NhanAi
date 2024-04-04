@@ -2,25 +2,82 @@
 @{
     var user = Context.Session.GetCurrentAuthentication();
 }
+
 @if(user != null){
-    <div class="dropdown">
-        <a>
-            <img src="@user.AvatarUrl" class="avatar" />
-            @user.Name
-        </a>
-        <div class="dropdown-menu">
-            <a asp-action="UserProfile" asp-controller="Setting">Profile</a>
-            <a asp-action="OrderHistory" asp-controller="Home">Lịch sử mua hàng</a>
-            <a asp-action="Logout" asp-controller="Auth">Đăng xuất</a>
-        </div>
-    </div>
-    <div>
-        <a asp-action="Index" asp-controller="Cart">Giỏ hàng</a>
-    </div>
+    <ul class="header__navbar-list">
+        <li class="header__navbar-item header__navbar-item--has-notify">
+            <a href="#" class="header__navbar-icon-link">
+                <i class="header__navbar-icon fa-solid fa-bell"></i>
+                <span class="no-pointer">Thông báo</span>
+            </a>
+            <div class="header__notify">
+                <div class="header__notify-no-login">
+                    <img src="/assets/image/no-login.png" alt="" class="header__notify-img">
+                    <div class="header__notify-lable">Đăng nhập để xem thông báo</div>
+                </div>
+                <div class="header__notify-btn">
+                    <button class="notify-btn header__notify-btn-login">Đăng nhập</button>
+                    <button class="notify-btn header__notify-btn-register">Đăng ký</button>
+                </div>
+            </div>
+        </li>
+
+        <li class="header__navbar-item">
+            <i class="header__navbar-icon fa-regular fa-circle-question"></i>
+            Trợ giúp
+        </li>
+
+        <li class="header__navbar-item header__navbar-user">
+            <img src="@user.AvatarUrl" alt="ảnh đại diện" class="header__navbar-user-img">
+            <span class="header__navbar-user-name">@user.Name</span>
+            <ul class="header__navbar-user-menu">
+                <li class="header__navbar-user-item">
+                    <a asp-action="UserProfile" asp-controller="Setting" class="header__navbar-user-link">Tài khoản</a>
+                </li>
+                <li class="header__navbar-user-item">
+                    <a asp-action="OrderHistory" asp-controller="Home" class="header__navbar-user-link">Lịch sử mua hàng</a>
+                </li>
+                <li class="header__navbar-user-item">
+                    <a asp-action="Logout" asp-controller="Auth" class="header__navbar-user-link">Đăng xuất</a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
 }
-else{
-    <ul>
-        <li><a asp-action="Register" asp-controller="Auth">Đăng ký</a></li> | 
-        <li><a asp-action="Login" asp-controller="Auth">Đăng nhập</a></li>
+else
+{
+    <ul class="header__navbar-list">
+        <li class="header__navbar-item header__navbar-item--has-notify">
+            <a href="#" class="header__navbar-icon-link">
+                <i class="header__navbar-icon fa-solid fa-bell"></i>
+                <span class="no-pointer">Thông báo</span>
+            </a>
+            <div class="header__notify">
+                <div class="header__notify-no-login">
+                    <img src="/assets/image/no-login.png" alt="" class="header__notify-img">
+                    <div class="header__notify-lable">Đăng nhập để xem thông báo</div>
+                </div>
+                <div class="header__notify-btn">
+                    <button class="notify-btn header__notify-btn-login">Đăng nhập</button>
+                    <button class="notify-btn header__notify-btn-register">Đăng ký</button>
+                </div>
+            </div>
+        </li>
+
+        <li class="header__navbar-item">
+            <i class="header__navbar-icon fa-regular fa-circle-question"></i>
+            Trợ giúp
+        </li>
+
+        <li class="header__navbar-item">
+            <a asp-action="Login" asp-controller="Auth" class="header__navbar-item-link">Đăng nhập</a>
+        </li>
+        <li class="header__navbar-item">
+            |
+        </li>
+        <li class="header__navbar-item">
+            <a asp-action="Register" asp-controller="Auth" class="header__navbar-item-link">Đăng ký</a>
+        </li>
     </ul>
 }

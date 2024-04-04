@@ -1,0 +1,291 @@
+.header__admin {
+    background-color: var(--white-color);
+    color: #333;
+    border-bottom: 5px solid var(--primary-color);
+}
+
+.header__admin-account {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 80px;
+    padding: 20px;
+}
+
+.header__admin-account-item {
+    width: 90px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+    .header__admin-account-item:hover .header__navbar-user-menu {
+        margin-top: -2px;
+        display: block;
+    }
+
+/* container-admin */
+
+.app_container-admin {
+    background-color: #f5f5f5;
+    margin-top: 10px;
+}
+
+.category {
+    display: flex;
+    height: 100%;
+    margin-left: -40px;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 350px;
+    background-color: white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6); /*Sửa 2 dòng này*/
+    border: 1px solid #eee; /*Sửa 2 dòng này*/
+    position: relative;
+}
+
+.category-item {
+    background-color: #e9e9e9;
+    opacity: 0.6;
+    padding: 5px 0 5px 20px;
+    display: flex;
+    align-items: baseline;
+}
+
+.category-item__link {
+    display: block;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 20px;
+    width: 100%;
+    color: #333;
+    padding: 10px;
+}
+
+.category-item.category-item--active {
+    background-color: white;
+    opacity: 1;
+    border-left: 4px solid #c23564;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+.category-content {
+    width: 950px;
+    background-color: white;
+    margin: 15px;
+    border: 1px solid #eee; /*Sửa 2 dòng này*/
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6); /*Sửa 2 dòng này*/
+}
+
+.category-content-list {
+    color: var(--text-color);
+    background-color: white;
+    width: 950px;
+    margin: 15px;
+    /* display: none; */
+}
+
+.category-content__heading {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 500;
+    color: crimson;
+    margin: 20px 0 50px 0;
+}
+
+.category-content__btn {
+    margin: 20px;
+}
+
+.category-content-icon {
+    color: white;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.category-item__link-icon {
+    color: var(--primary-color);
+}
+
+.category-content__lable {
+    font-size: 1rem;
+    font-weight: 900;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.category-content__item {
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+.category-content__item-name {
+    overflow: hidden; /*nếu dài quá ẩn bớt chữ*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.category-content__item-img {
+    height: 100px;
+    width: 100px;
+}
+
+
+/* Tìm kiếm */
+.category-search {
+    display: flex;
+    flex-basis: 30px;
+    align-items: center;
+    margin-left: 10px;
+    height: 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+
+.category-search__input {
+    width: 250px;
+    padding: 10px;
+    border-right: 1px solid #eee;
+    border-top: none;
+    border-left: none;
+    border-bottom: none;
+}
+
+.category-search__select {
+    width: 155px;
+    height: 40px;
+    border: none;
+}
+
+    .category-search__input:focus, .category-search__select:focus {
+        outline: none;
+    }
+
+.category-search__btn {
+    border: none;
+    width: 50px;
+    height: 25px;
+    background-color: #dc3545;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .category-search__btn:hover {
+        background-color: #e64757;
+    }
+
+.category-search__icon {
+    width: 20px;
+    height: 20px;
+    padding-top: 3px;
+    color: white;
+}
+
+
+
+
+/*Form-add-update*/
+.admin__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.admin__form-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+}
+
+    .admin__form-form h2 {
+        text-align: center;
+        color: crimson;
+        height: 30px;
+    }
+
+.admin__form-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #eee;
+}
+
+    .admin__form-input:focus {
+        outline: 1px solid #eee;
+    }
+
+.admin__form-item {
+    display: flex;
+    align-items: baseline;
+    height: 40px;
+    padding: 0px 30px 0 100px;
+}
+
+.admin__form-lable {
+    width: 30%;
+    font-size: 0.9rem;
+}
+
+.admin__form-btn {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.category-form__inside {
+    margin-top: 20px;
+    padding: 20px;
+    border-top: 1px solid #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    overflow-y: auto;
+}
+
+.category-form__heading {
+    font-size: 1rem;
+    font-weight: 900;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.category-form__item {
+    color: var(--text-color);
+    display: flex;
+    height: 50px;
+}
+
+.checkbox-role__row {
+}
+
+.checkbox-role__row-item {
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    width:50%;
+}
+
+.checkbox-list {
+    display: flex;
+    align-items: baseline;
+    padding-left: 40px;
+}
+
+.checkbox-list__lable {
+    color: var(--text-color);
+    margin-left: 10px;
+}

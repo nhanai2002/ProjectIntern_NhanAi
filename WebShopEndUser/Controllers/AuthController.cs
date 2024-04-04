@@ -52,7 +52,8 @@ namespace WebShopEndUser.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Error", new { rrorMessage = "Thông tin đăng nhập không hợp lệ" });
+                ModelState.AddModelError(string.Empty, "Tên tài khoản hoặc mật khẩu không đúng.");
+                return View(model);
             }
 
             HttpContext.Session.SetCurrentAuthentication(user);
@@ -111,7 +112,7 @@ namespace WebShopEndUser.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.RemoveSession();
-            return RedirectToAction("Login", "Auth");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Register()

@@ -15,6 +15,6 @@ namespace WebShopCore.ViewModel.Order
         public List<UserViewModel> ListUserViewModel { get; set; }
         public List<OrderItemViewModel> OrderItems { get; set; }
         public List<ProductViewModel> ListProductViewModel { get; set; }
-        public string[] ProductIds { get; set; }
+        public string ProductIds { get; set; }
     }
 }

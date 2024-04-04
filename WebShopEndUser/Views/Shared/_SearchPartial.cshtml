@@ -1,1 +1,20 @@
-﻿
+﻿<div class="header-with-search">
+    <div class="header__logo">
+        <img src="~/assets/image/logo.png" class="header__logo-img" />
+    </div>
+
+    <form asp-action="Index" asp-controller="Home" class="header__search">
+        <div class="header__search-input-wrap">
+            <input name="keyword" class="header__search-input" placeholder="Tìm kiếm..." />
+            <!-- lịch sử tìm kiếm -->
+        </div>
+        <button class="header__search-btn">
+            <i class="header__sreach-btn-icon fa-solid fa-magnifying-glass"></i>
+        </button>
+
+    </form>
+
+
+    <partial name="_CartPartial"></partial>
+</div>
+

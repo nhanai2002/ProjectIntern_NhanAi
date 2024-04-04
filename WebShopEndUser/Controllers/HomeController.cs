@@ -38,7 +38,7 @@ namespace WebShopEndUser.Controllers
             
             if(keyword != null && keyword != "")
             {
-                data = data.Where(x => EF.Functions.Like(x.Name, $"{keyword}"));
+                data = data.Where(x => EF.Functions.Like(x.Name, $"%{keyword}%"));
             }
             data = data.Include(x => x.ProductCategories)
                             .ThenInclude(x => x.Category)

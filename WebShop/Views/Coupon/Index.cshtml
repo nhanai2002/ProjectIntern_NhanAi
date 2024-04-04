@@ -1,49 +1,95 @@
-﻿@model IEnumerable<WebShopCore.ViewModel.Coupon.CouponViewModel>
+﻿@using static WebShopCore.Const.SysEnum;
+@model IEnumerable<WebShopCore.ViewModel.Coupon.CouponViewModel>
 @{
     ViewData["Title"] = "Mã khuyến mãi";
+    Layout = "_HomeAdminLayout";
     ViewBag.active = "6";
 }
-<a asp-action="Create" asp-controller="Coupon">Tạo coupon</a>
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Mã khuyến mãi</th>
-                <th scope="col">Mã khuyến mãi</th>
-                <th scope="col">Thời gian bắt đầu</th>
-                <th scope="col">Thời gian kết thúc</th>
-                <th scope="col">Loại giảm giá</th>
-                <th scope="col">Lượt sử dụng tối đa</th>
-                <th scope="col">Trạng thái</th>
-                <th scope="col">Cập nhật lúc</th>
-                <th scope="col">Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null)
-            {
-                @foreach (var coupon in Model)
-                {
-                    <tr>
-                        <th scope="row">@coupon.Id</th>
-                        <td style="max-width: 100px">@coupon.Name</td>
-                        <td>@coupon.Code</td>
-                        <td>@coupon.TimeStart</td>
-                        <td>@coupon.TimeEnd</td>
-                        <td>@coupon.CouponPriceTypeDisplay</td>
-                        <td>@coupon.LimitationTimes</td>
-                        <td>@(coupon.IsActive ? "Hoạt động" : "Không hoạt động")</td>
-                        <td>@coupon.UpdatedAt</td>
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@coupon.Id">Delete</a> |
-                            <a asp-action="Edit" asp-route-id="@coupon.Id">Edit</a> |
-                            <a asp-action="SetStatus" asp-route-id="@coupon.Id">Change Status</a> |
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
 
+
+<div class="category-content-list category-content-list--active">
+    <div class="category-content__heading">
+        Quản lý sản phẩm
+    </div>
+
+    <div class="category-search">
+        <form asp-action="Index" class="category-search__form">
+            <input type="text" name="keyword" class="category-search__input" placeholder="Từ khóa..." />
+            <select name="selectType" asp-items="Html.GetEnumSelectList<CouponStatus>()" class="category-search__select">
+                <option selected="selected" value="">Trạng thái Coupon</option>
+            </select>
+            <button type="submit" class="category-search__btn">
+                <i class="category-search__icon fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
+
+
+    <div class="category-content__btn">
+        <a asp-action="Create" asp-controller="Coupon" class="btn btn-checkout">
+            <i class="category-content-icon fa-solid fa-plus"></i>
+            Tạo Coupon
+        </a>
+    </div>
+    <div class="grid">
+        <div class="grid__row category-content__lable">
+            <div class="grid__column-2">
+                <span>#</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Tên</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Mã Coupon</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Loại giảm giá</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Trạng thái</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Thao tác</span>
+            </div>
+        </div>
+
+
+        @if (Model != null)
+        {
+            @foreach (var coupon in Model)
+            {
+                <div class="grid__row category-content__item">
+
+                    <div class="grid__column-2">
+                        <span>@coupon.Id</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-content__item-name">@coupon.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@coupon.Code</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@coupon.CouponPriceTypeDisplay</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@(coupon.IsActive ? "Hoạt động" : "Không hoạt động")</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>
+                            <a asp-action="Delete" asp-route-id="@coupon.Id" title="Xóa">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@coupon.Id" title="Sửa">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="SetStatus" asp-route-id="@coupon.Id" title="Đổi trạng thái">
+                                <i class="fa-regular fa-bolt-lightning"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>

@@ -334,6 +334,9 @@ namespace WebShopCore.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
@@ -541,20 +544,20 @@ namespace WebShopCore.Migrations
                         new
                         {
                             RoleId = 1,
-                            CreatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2643),
+                            CreatedAt = new DateTime(2024, 3, 28, 13, 23, 9, 708, DateTimeKind.Local).AddTicks(3001),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2623)
+                            UpdatedAt = new DateTime(2024, 3, 28, 13, 23, 9, 708, DateTimeKind.Local).AddTicks(2986)
                         },
                         new
                         {
                             RoleId = 2,
-                            CreatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2688),
+                            CreatedAt = new DateTime(2024, 3, 28, 13, 23, 9, 708, DateTimeKind.Local).AddTicks(3048),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "EndUser",
-                            UpdatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2688)
+                            UpdatedAt = new DateTime(2024, 3, 28, 13, 23, 9, 708, DateTimeKind.Local).AddTicks(3048)
                         });
                 });
 

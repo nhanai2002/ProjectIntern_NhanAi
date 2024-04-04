@@ -106,7 +106,7 @@ namespace WebShop.Controllers
                 UserGuid = user.UserGuid,
                 UserId = user.UserId,
                 RoleId = user.RoleId,
-                AvatarUrl = string.IsNullOrEmpty(user.Avatar) ? "/img/no-avatar.png" : user.Avatar,
+                AvatarUrl = string.IsNullOrEmpty(user.Avatar) ? "/img/baseAvatar.jpg" : user.Avatar,
                 Email = user.Email,
                 UserName = user.UserName,
                 Phone = user.Phone,

@@ -2,63 +2,117 @@
 @model WebShopCore.ViewModel.Order.OrderCrudModel
 @{
     ViewData["Title"] = "Tạo mới đơn hàng";
+    Layout = "_HomeAdminLayout";
     var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
 }
 
-<div>
-    <form asp-action="Create" asp-controller="Order" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="admin__form">
+    <form asp-action="Create" asp-controller="Order" method="post" class="admin__form-form">
+        <h2>Tạo mới đơn hàng</h2>
         <input type="hidden" id="productIds" asp-for="ProductIds" />
-        <div class="form-group">
-            <label>Người mua</label>
-            <select class="form-select" asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))">
+        
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Người mua:</div>
+            <select asp-for="CreateByUserId" asp-items="@(new SelectList(Model.ListUserViewModel, "UserId", "Name"))" class="category-search__select">
                 <option selected> Chọn người mua</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Trạng thái đơn hàng</label>
-            <select class="form-select" asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()">
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái đơn hàng:</div>
+            <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="category-search__select">
                 <option selected> Chọn trạng thái đơn hàng</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Trạng thái vận chuyển</label>
-            <select class="form-select" asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()">
-                <option selected>Chọn trạng thái vận chuyển</option>
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái thanh toán:</div>
+            <select asp-for="PaymentStatus" asp-items="Html.GetEnumSelectList<PaymentStatus>()" class="category-search__select">
+                <option selected>Chọn trạng thái thanh toán</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Địa chỉ</label>
-            <input asp-for="Address" placeholder="Nhập địa chỉ" class="form-control"/>
+
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Trạng thái vận chuyển:</div>
+            <select asp-for="ShippingStatus" asp-items="Html.GetEnumSelectList<ShippingStatus>()" class="category-search__select">
+                <option selected> Chọn trạng thái vận chuyển</option>
+            </select>
         </div>
-        <br />
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Tên</th>
-                        <th scope="col">Mã sản phẩm</th>
-                        <th scope="col">Giá</th>
-                        <th scope="col">Chọn</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var product in Model.ListProductViewModel)
-                    {
-                        <tr>
-                            <td>@product.Name</td>
-                            <td>@product.Code</td>
-                            <td>@(String.Format(info, "{0:c}", product.SellPrice))</td>
-                            <td>
-                                <div class="form-group checkbox">
-                                    <input asp-for="ProductIds" value="@product.ProductId" type="checkbox"/>
-                                    <label>@product.ProductId</label>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Địa chỉ:</div>
+            <input asp-for="Address" class="admin__form-input" required/>
+        </div>
+
+
+        <div class="grid category-form__inside">
+            <div class="grid__row category-form__heading">
+                <div class="grid__column-2">
+                </div>
+                <div class="grid__column-2">
+                    <span>Tên</span>
+                </div>
+                <div class="grid__column-2">
+                    <span>Mã sản phẩm</span>
+                </div>
+                <div class="grid__column-2">
+                    <span>Giá</span>
+                </div>
+                <div class="grid__column-2">
+                    <span>Chọn</span>
+                </div>
+            </div>
+            @foreach(var product in Model.ListProductViewModel)
+            {
+                <div class="grid__row category-form__item">
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@product.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@product.Code</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span class="category-form-name">@(String.Format(info, "{0:c}", product.SellPrice))</span>
+                    </div>
+                    <div>
+                         <input id="check_@product.ProductId" onclick="addProduct(@product.ProductId)" type="checkbox" />
+                         <label>@product.ProductId</label>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="Order" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
         </div>
     </form>
+
 </div>
+
+
+
+@section Scripts{
+    <script>
+        var tmp = [];
+        function addProduct(productId) {
+            // Check xem checkbox có đang checked hay k
+            var checkboxStatus = document.getElementById("check_" + productId).checked;
+            var productIds = document.getElementById("productIds");
+            console.log(checkboxStatus);
+            if (checkboxStatus == true) {
+                tmp.push(productId);
+            } else {
+                tmp.pop(productId);
+            }
+            productIds.value = tmp;
+            console.log(productIds);
+        }
+    </script>
+}

@@ -28,7 +28,7 @@ namespace WebShop.Controllers
         }
 
         [Display(Name = "Xem coupon")]
-        public IActionResult Index(string keyword, int selectType)
+        public IActionResult Index(string keyword, int? selectType)
         {
             var data = _uow.CouponRepository.BuildQuery(
                     x => !x.IsDeleted);
@@ -73,8 +73,9 @@ namespace WebShop.Controllers
                     model.IsActive = true;
                     _uow.CouponRepository.Add(_mapper.Map<Coupon>(model));
                     await _uow.CommitAsync();
+                    return RedirectToAction("Index");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return View("Error", ex.Message);
                 }
