@@ -57,45 +57,47 @@
 {
     foreach (var item in Model)
     {
-        <a href="#" class="home-product-item">
-            @if (item.ProductImages.Count() > 0)
-            {
-                var img = item.ProductImages.FirstOrDefault().Image.Url;
-                <div class="home-product-item__img" style="background-image: url(@img);"></div>
-            }
-            else
-            {
-                <div class="home-product-item__img" style="background-image: url(~/img/no-image.jpg);"></div>
-            }
-            <h4 class="home-product-item__name">@item.Name</h4>
-            <div class="home-product-item__price">
-                <span class="home-product-item__price-old">
-                    @(String.Format(info, "{0:c}", @item.BasePrice))
-                </span>
-                <span class="home-product-item__price-current">
-                    @(String.Format(info, "{0:c}", @item.SellPrice))
-                </span>
-            </div>
-
-            <div class="home-product-item__action">
-                <span class="home-product-item__like home-product-item__like--liked">
-                    <i class="home-product-item__like-icon-empty fa-regular fa-heart"></i>
-                    <i class="home-product-item__like-icon-fill fa-solid fa-heart"></i>
-                </span>
-
-                <div class="home-product-item__rating">
-                    <i class="home-product-item__star--gold fa-solid fa-star"></i>
-                    <i class="home-product-item__star--gold fa-solid fa-star"></i>
-                    <i class="home-product-item__star--gold fa-solid fa-star"></i>
-                    <i class=" fa-solid fa-star"></i>
-                    <i class=" fa-solid fa-star"></i>
+        <div class="grid__column-2">
+            <a href="#" class="home-product-item">
+                @if (item.ProductImages.Count() > 0)
+                {
+                    var img = item.ProductImages.FirstOrDefault().Image.Url;
+                    <div class="home-product-item__img" style="background-image: url(@img);"></div>
+                }
+                else
+                {
+                    <div class="home-product-item__img" style="background-image: url(~/img/no-image.jpg);"></div>
+                }
+                <h4 class="home-product-item__name">@item.Name</h4>
+                <div class="home-product-item__price">
+                    <span class="home-product-item__price-old">
+                        @(String.Format(info, "{0:c}", @item.BasePrice))
+                    </span>
+                    <span class="home-product-item__price-current">
+                        @(String.Format(info, "{0:c}", @item.SellPrice))
+                    </span>
                 </div>
-                <span class="home-product-item__sold">1 đã bán</span>
-            </div>
-        </a>
-        <a asp-action="CreateCart" asp-controller="Cart" asp-route-productId="@item.ProductId">
-            Add to Cart
-        </a>
+
+                <div class="home-product-item__action">
+                    <span class="home-product-item__like home-product-item__like--liked">
+                        <i class="home-product-item__like-icon-empty fa-regular fa-heart"></i>
+                        <i class="home-product-item__like-icon-fill fa-solid fa-heart"></i>
+                    </span>
+
+                    <div class="home-product-item__rating">
+                        <i class="home-product-item__star--gold fa-solid fa-star"></i>
+                        <i class="home-product-item__star--gold fa-solid fa-star"></i>
+                        <i class="home-product-item__star--gold fa-solid fa-star"></i>
+                        <i class=" fa-solid fa-star"></i>
+                        <i class=" fa-solid fa-star"></i>
+                    </div>
+                    <span class="home-product-item__sold">1 đã bán</span>
+                </div>
+            </a>
+            <a asp-action="CreateCart" asp-controller="Cart" asp-route-productId="@item.ProductId">
+                Add to Cart
+            </a>
+        </div>
 
     }
 }
