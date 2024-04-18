@@ -1,23 +1,29 @@
 ﻿@model WebShopCore.ViewModel.Image.ProductImageCrudModel
 @{
     ViewData["Title"] = "Thêm hình ảnh sản phẩm";
-    Layout = "_Layout";
+    Layout = "_HomeAdminLayout";
 }
-<h1>Add Product</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateProductImages" method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="ProductId"/>
-            <div class="form-group">
-                <label asp-for="FileImages" class="control-label"></label>
-                <input type="file" asp-for="FileImages" multiple />
-                <span asp-validation-for="FileImages" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="admin__form">
+    <form asp-action="CreateProductImages" method="post" enctype="multipart/form-data" class="admin__form-form">
+        <h2>Thêm hình ảnh</h2>
+        <input type="hidden" asp-for="ProductId" />
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Chọn 1 hoặc nhiều hình ảnh:</div>
+            <input asp-for="FileImages" type="file" multiple class="admin__form-input" />
+        </div>
+
+
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="Product" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
+
 </div>
+
+

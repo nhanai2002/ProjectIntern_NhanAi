@@ -81,7 +81,7 @@ namespace WebShop.Controllers
                         var ct = _uow.CategoryRepository.FirstOrDefault(x => x.CategoryId == categoryid);
                         lsCategory.Add(new ProductCategory
                         {
-                            Category = _mapper.Map<Category>(ct),
+                            Category = ct,
                             Product = product
                         });
                     }
@@ -99,8 +99,9 @@ namespace WebShop.Controllers
             return View(model);
         }
 
-        // dùng ajax chỉnh lại thành post
+
         [Display(Name = "Xóa sản phẩm")]
+        [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
             var error = new ErrorViewModel();
@@ -110,12 +111,12 @@ namespace WebShop.Controllers
                 product.IsDeleted = true;
                 product.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
             else
             {
                 error.ErrorMessage = "Sản phẩm ko tồn tại.";
-                return View("Error", error);
+                return Json(new { success = false, message = error.ErrorMessage });
             }
         }
 
@@ -126,7 +127,7 @@ namespace WebShop.Controllers
             var product = _uow.ProductRepository
                 .BuildQuery(x => x.ProductId == id)
                 .Include(x => x.ProductCategories)
-                .ThenInclude(x=>x.Category)
+                    .ThenInclude(x=>x.Category)
                 .FirstOrDefault();
 
             var categorySelected = product.ProductCategories
@@ -153,7 +154,8 @@ namespace WebShop.Controllers
                 {
                     var product = _uow.ProductRepository
                         .BuildQuery(x => x.ProductId == model.ProductId)
-                        .Include(x=>x.ProductCategories).FirstOrDefault();
+                        .Include(x=>x.ProductCategories)
+                        .FirstOrDefault();
                     if (product != null)
                     {
                         product.UpdatedAt = DateTime.Now;
@@ -178,7 +180,7 @@ namespace WebShop.Controllers
                             var category = _uow.CategoryRepository.FirstOrDefault(x => x.CategoryId == id);
                            
                             product.ProductCategories.Add(new ProductCategory() { 
-                                Category = _mapper.Map<Category>(category),
+                                Category = category,
                                 Product = product 
                             });
                         }
@@ -201,10 +203,13 @@ namespace WebShop.Controllers
             }
             else
             {
-                return View();
+                return View(model);
             }
         }
 
+
+        [Display(Name = "Thay đổi trạng thái sản phẩm")]
+        [HttpPost]
         public async Task<IActionResult> SetStatus(int productId)
         {
             var product = _uow.ProductRepository.FirstOrDefault(x => x.ProductId == productId);
@@ -213,8 +218,12 @@ namespace WebShop.Controllers
                 product.IsActive = !product.IsActive;
                 product.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
+                return Json(new { success = true });
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return Json(new { success = false });
+            }
         }
     }
 }

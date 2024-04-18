@@ -9,6 +9,7 @@ using WebShopEndUser.Permission;
 using WebShopCore.Model;
 using WebShopCore.ViewModel.User;
 using WebShopCore.Services.VnPayService;
+using WebShopCore.Repositories;
 
 namespace WebShopEndUser.Controllers
 {
@@ -52,28 +53,28 @@ namespace WebShopEndUser.Controllers
             }
         }
 
-        public async Task<IActionResult> CreateCart(int productId)
+        public async Task<IActionResult> CreateCart(int productId, int? quantity)
         {
             var user = HttpContext.Session.GetCurrentAuthentication();
             if (productId != 0)
             {
-                await AddToCart(user.UserId, productId);
-
+                var check = await AddToCart(user.UserId, productId, quantity);
+                if (check)
+                {
+                    return RedirectToAction("Index");
+                }
             }
-            return RedirectToAction("Index");
+            return View("Error", "Đã xảy ra lỗi!");
         }
 
+        [HttpPost]
         public async Task<IActionResult> RemoveCartItem(int cartItemId)
         {
             var cartItem = _uow.CartItemRepository.FirstOrDefault(x => x.CartItemId == cartItemId);
             if(cartItem != null)
             {
                 var product = _uow.ProductRepository.FirstOrDefault(x => x.ProductId == cartItem.ProductId);
-                if(product != null)
-                {
-                    product.Quantity++;
-                    await _uow.CommitAsync();
-                }
+                
                 var cart = _uow.CartRepository.BuildQuery(x => x.CartId == cartItem.CartId)
                     .Include(x => x.CartItems)
                     .FirstOrDefault();
@@ -100,8 +101,12 @@ namespace WebShopEndUser.Controllers
                     }
                 }
                 await _uow.CommitAsync();
+                return Json(new { success = true });
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return Json(new { success = false });
+            }
         }
         public async Task<IActionResult> UpdateCartItem(int cartItemId, bool isAdd)
         {
@@ -118,7 +123,6 @@ namespace WebShopEndUser.Controllers
                     {
                         if(product.Quantity > 0)
                         {
-                            product.Quantity--;
                             cartItem.Quantity++;
                         }
                         else
@@ -133,25 +137,29 @@ namespace WebShopEndUser.Controllers
                             if(cartItem.Quantity > 1)
                             {
                                 cartItem.Quantity--;
-                                product.Quantity++;
                             }
                             else
                             {
-                                product.Quantity++;
                                 _uow.CartItemRepository.DeleteById(cartItem.CartItemId);
                             }
                         }
                         else
                         {
-                            product.Quantity++;
-                            var user = HttpContext.Session.GetCurrentAuthentication();
-                            if (user != null)
+                            if (cartItem.Quantity > 1)
                             {
-                                var userData = _uow.UserRepository.FirstOrDefault(x => x.UserId == user.UserId);
-                                userData.CartId = null;
+                                cartItem.Quantity--;
                             }
-                            _uow.CartItemRepository.DeleteById(cartItem.CartItemId);
-                            _uow.CartRepository.DeleteById(cart.CartId);
+                            else
+                            {
+                                var user = HttpContext.Session.GetCurrentAuthentication();
+                                if (user != null)
+                                {
+                                    var userData = _uow.UserRepository.FirstOrDefault(x => x.UserId == user.UserId);
+                                    userData.CartId = null;
+                                }
+                                _uow.CartItemRepository.DeleteById(cartItem.CartItemId);
+                                _uow.CartRepository.DeleteById(cart.CartId);
+                            }
                         }
                     }
 
@@ -161,7 +169,7 @@ namespace WebShopEndUser.Controllers
 
             return RedirectToAction("Index");
         }
-        private async Task<bool> AddToCart(int userId, int productId)
+        private async Task<bool> AddToCart(int userId, int productId, int? quantity)
         {
             var user = _uow.UserRepository.FirstOrDefault(x => x.UserId == userId);
             if (user != null)
@@ -192,7 +200,7 @@ namespace WebShopEndUser.Controllers
                     CartItem cartItem = new()
                     {
                         ProductId = product.ProductId,
-                        Quantity = 1,
+                        Quantity = quantity.HasValue ? quantity.Value : 1,
                         Cart = cart,
                         CartId = cart.CartId,
                         CreatedAt = DateTime.Now,
@@ -215,7 +223,7 @@ namespace WebShopEndUser.Controllers
                         {
                             if(item.ProductId == productId)
                             {
-                                item.Quantity++;
+                                item.Quantity += quantity.HasValue ? quantity.Value : 1;
                             }
                         }
                     }
@@ -224,7 +232,7 @@ namespace WebShopEndUser.Controllers
                         CartItem newCartItem = new()
                         {
                             ProductId = product.ProductId,
-                            Quantity = 1,
+                            Quantity = quantity.HasValue ? quantity.Value : 1,
                             CartId = checkCart.CartId,
                             CreatedAt = DateTime.Now,
                             UpdatedAt = DateTime.Now,
@@ -234,7 +242,7 @@ namespace WebShopEndUser.Controllers
                         _uow.CartItemRepository.Add(newCartItem);
                     }
                 }
-                product.Quantity--;
+                //product.Quantity -= quantity.HasValue ? quantity.Value : 1;
                 await _uow.CommitAsync();
             }
             return true;
@@ -262,23 +270,23 @@ namespace WebShopEndUser.Controllers
                     {
                         if(coupon.CouponPriceType == (int)SysEnum.CouponType.Direct)
                         {
-                            if(coupon.CouponPriceType >= cart.Total)
+                            if(coupon.CouponPriceValue >= cart.Total)
                             {
                                 cart.Total = 0;
                             }
                             else
                             {
-                                cart.Total -= coupon.CouponPriceType;
+                                cart.Total -= coupon.CouponPriceValue;
                             }
                         }
                         else if(coupon.CouponPriceType == (int)SysEnum.CouponType.Percent)
                         {
-                            cart.Total -= cart.Total * coupon.CouponPriceType / 100;
+                            cart.Total -= cart.Total * coupon.CouponPriceValue / 100;
                         }
                     }
+                    await _uow.CommitAsync();
                 }
             }
-            await _uow.CommitAsync();
             return true;
         }
 
@@ -385,6 +393,17 @@ namespace WebShopEndUser.Controllers
                         .ThenInclude(x => x.ProductImages)
                         .ThenInclude(x => x.Image)
                     .FirstOrDefault();
+
+                foreach(var i in userData.Cart.CartItems)
+                {
+                    var product = _uow.ProductRepository.FirstOrDefault(x => x.ProductId == i.ProductId);
+                    if(product != null)
+                    {
+                        product.Quantity -= i.Quantity;
+                    }
+                }
+
+
                 var tmpId = new Random().Next(1000, 100000);
                 Order order = new()
                 {
@@ -447,6 +466,67 @@ namespace WebShopEndUser.Controllers
             {
                 return false;
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyCoupon(string coupon, int cartId)
+        {
+            var cart = _uow.CartRepository.BuildQuery(x => x.CartId == cartId)
+                .Include(x => x.Coupon)
+                .FirstOrDefault();
+            var user = HttpContext.Session.GetCurrentAuthentication();
+
+            if (cart != null)
+            {
+                if(coupon != null)
+                {
+                    coupon = coupon.Trim();
+                }
+                var couponData = _uow.CouponRepository
+                    .FirstOrDefault(x => x.Code == coupon
+                    && x.IsActive 
+                    && !x.IsDeleted
+                    && DateTime.Now >= x.TimeStart
+                    && DateTime.Now <= x.TimeEnd);
+                if(couponData != null)
+                {
+                    var couponHistory = _uow.CouponHistoryRepository.BuildQuery(x => x.CouponId == couponData.Id).ToList();
+                    if(couponHistory != null && couponHistory.Any())
+                    {
+                        if (couponHistory.Count() >= couponData.LimitationTimes)
+                        {
+                            return new JsonResult("Không thể áp dụng coupon!");
+                        }
+                    }
+
+                    if(cart.CouponId == null)
+                    {
+                        CouponHistory newCouponHistory = new()
+                        {
+                            UserId = user.UserId,
+                            CouponId = couponData.Id,
+                        };
+                        await _uow.CouponHistoryRepository.AddAsync(newCouponHistory);
+                        cart.CouponId = couponData.Id;
+                    }
+                    else
+                    {
+                        var userCouponHistory = _uow.CouponHistoryRepository.FirstOrDefault(x => x.UserId == user.UserId);
+                        if(userCouponHistory != null)
+                        {
+                            userCouponHistory.CouponId = couponData.Id;
+                            cart.CouponId = couponData.Id;
+                        }
+                    }
+                }
+                else
+                {
+                    return new JsonResult("Coupon không hợp lệ!");
+                }
+            }
+            await _uow.CommitAsync();
+            Response.StatusCode = 200;
+            return new JsonResult("Áp dụng thành công");
         }
     }
 }

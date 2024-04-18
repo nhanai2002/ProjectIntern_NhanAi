@@ -80,7 +80,7 @@ namespace WebShop.Controllers
             }
         }
 
-        // đổi mật khẩu
+        // tự đổi mật khẩu
         public IActionResult ChangePassword()
         {
             var getUser = HttpContext.Session.GetCurrentAuthentication(); 
@@ -144,7 +144,7 @@ namespace WebShop.Controllers
             }
             else
             {
-                return RedirectToAction("Home", "Index");
+                return View("Error", "Lỗi không tìm thấy user");
             }
         }
 

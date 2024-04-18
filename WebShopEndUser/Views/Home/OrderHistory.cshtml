@@ -1,4 +1,5 @@
 ﻿@using WebShopCore.Helper;
+@using WebShopCore.Const;
 @model List<WebShopCore.ViewModel.Order.OrderViewModel>
 @{
     ViewData["Title"] = "Lịch sử mua hàng";
@@ -8,62 +9,81 @@
     <div class="app_container-lable">
         <span class="app_container-lable-msg">LỊCH SỬ MUA HÀNG</span>
     </div>
-    <div class="grid">
-        <div class="home-cart">
-            <div class="grid__row home-cart--heading">
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Mã đơn hàng</span>
-                </div>
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Ngày đặt hàng</span>
-                </div>
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Sản phẩm</span>
-                </div>
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Tổng cộng</span>
-                </div>
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Trạng thái đơn hàng</span>
-                </div>
-                <div class="grid__column-2">
-                    <span class="home-cart-item">Trạng thái vận chuyển</span>
-                </div>
+
+    @if(Model != null)
+    {
+        <div class="order-body">
+            <div class="order-body__list">
+                <!-- vong lap -->
+                @foreach (var order in Model)
+                {
+                    <div class="order-body__item">
+                        <div class="order-body__item--heading">
+                            <div class="order-body__code">#@order.Code</div>
+                            <div class="order-body__status-shipping">
+                                <i class="order-body__icon fa-solid fa-truck-fast"></i>
+                                @order.ShippingStatusDisplay
+                            </div>
+                            <div class="order_body__status-order">
+                                <i class="order-body__icon fa-solid fa-paper-plane"></i>
+                                @order.OrderStatusDisplay
+                            </div>
+                            <div class="order-body__orderAt">
+                                <i class=" order-body__icon fa-solid fa-clock-rotate-left"></i>
+                                @order.CreatedAt
+                            </div>
+                        </div>
+                        <!-- danh sacsh san pham -->
+                        <div class="order-body__item--list">
+                            <!-- vòng lặp -->
+                            @foreach (var orderItem in order.OrderItems)
+                            {
+                                var img = orderItem.Product.ProductImages.FirstOrDefault().Image.Url;
+                                <div class="order-body__item--item">
+                                    <div>
+                                        <img src="@img" class="order-body__img">
+                                    </div>
+                                    <div class="order-body__content">
+                                        <div class="order-body__name">@orderItem.Product.Name</div>
+                                        <div class="order-body__price">@order.Total.ConvertToVND()</div>
+
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+
+                        <!-- check xem đã giao chưa & đã đánh giá chưa -->
+                        @if (order.OrderStatus == (int)SysEnum.OrderStatus.Completed && order.FeedbackId == null)
+                        {
+                            <div class="order_body__btn">
+                                <a asp-action="CreateFeedback" asp-controller="Feedback" asp-route-orderId="@order.OrderId" class="btn btn-checkout">Viết đánh giá</a>
+                            </div>
+                        }
+                        else if (order.OrderStatus == (int)SysEnum.OrderStatus.Completed && order.FeedbackId != null)
+                        {
+                            <div class="order_body__btn">
+                                <a class="btn btn--disable">Đã đánh giá</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="order_body__btn">
+                                <a class="btn btn--disable">Viết đánh giá</a>
+                            </div>
+                        }
+
+
+                    </div>
+
+                }
+
+
             </div>
-
-            @if (Model != null)
-            {
-                <div class="grid__row home-cart-list">
-
-                    @foreach (var order in Model)
-                    {
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">@order.Code</span>
-                        </div>
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">@order.CreatedAt</span>
-                        </div>
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">
-                                @foreach (var orderItem in order.OrderItems)
-                                {
-                                    <div>@orderItem.Product.Name</div>
-                                }
-                            </span>
-                        </div>
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">@order.Total.ConvertToVND()</span>
-                        </div>
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">@order.OrderStatusDisplay</span>
-                        </div>
-                        <div class="grid__column-2">
-                            <span class="home-cart-item">@order.ShippingStatusDisplay</span>
-                        </div>                        
-                    }
-
-                </div>
-            }
         </div>
-    </div>
+
+    }
+
 </div>
+
+

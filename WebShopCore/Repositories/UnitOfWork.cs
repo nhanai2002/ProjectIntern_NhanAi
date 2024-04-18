@@ -28,6 +28,9 @@ namespace WebShopCore.Repositories
         private ICartHistoryRepository _CartHistoryRepository;
         private IOrderRepository _OrderRepository;
         private IOrderItemRepository _OrderItemRepository;
+        private IFeedbackRepository _FeedbackRepository;
+        private IProductFeedBackRepository _ProductFeedBackRepository;
+
         public UnitOfWork(WebShopDbContext context)
         {
             _context = context;
@@ -48,6 +51,9 @@ namespace WebShopCore.Repositories
         public ICartHistoryRepository CartHistoryRepository => _CartHistoryRepository ??= new CartHistoryRepository(_context);
         public IOrderRepository OrderRepository => _OrderRepository ??= new OrderRepository(_context);
         public IOrderItemRepository OrderItemRepository => _OrderItemRepository ??= new OrderItemRepository(_context);
+        public IFeedbackRepository FeedbackRepository => _FeedbackRepository ??= new FeedbackRepository(_context);
+        public IProductFeedBackRepository ProductFeedBackRepository => _ProductFeedBackRepository ??= new ProductFeedBackRepository(_context);
+
 
         public async Task CommitAsync()
         {

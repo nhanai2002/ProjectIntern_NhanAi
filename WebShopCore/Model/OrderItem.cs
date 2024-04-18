@@ -23,7 +23,9 @@ namespace WebShopCore.Model
     {
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
+
         [ForeignKey(nameof(OrderId))]
         public Order Order { get; set; }
+
     }
 }

@@ -1,26 +1,37 @@
 ﻿@model WebShopCore.ViewModel.Image.ImageCrudModel
 @{
     ViewData["Title"] = "Sửa hình ảnh";
-    Layout = "_Layout";
+    Layout = "_HomeAdminLayout";
 }
-<label>Hình ảnh gốc</label>
-<img style="height:100px; width:100px" src="@Model.Url" />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditProductImages" method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="ProductId" />
-            <input type="hidden" asp-for="ImageId" />
-            <input type="hidden" asp-for="Url" />
-            <div class="form-group">
-                <label asp-for="FileImage" class="control-label"></label>
-                <input type="file" asp-for="FileImage" />
-                <span asp-validation-for="FileImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="admin__form">
+    <form asp-action="EditProductImages" method="post" enctype="multipart/form-data" class="admin__form-form">
+        <h2>Thay đổi hình ảnh</h2>
+        <input type="hidden" asp-for="ProductId" />
+        <input type="hidden" asp-for="ImageId" />
+        <input type="hidden" asp-for="Url" />
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Hình ảnh gốc:</div>
+            <img src="@Model.Url" class="home-cart-item home-cart-item-img" />
+        </div>
+        <div class="admin__form-item">
+        </div>
+        <div class="admin__form-item">
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Chọn hình ảnh khác:</div>
+            <input asp-for="FileImage" type="file" class="admin__form-input" />
+        </div>
+
+
+        <div class="admin__form-btn">
+            <a asp-action="Index" asp-controller="Product" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
+
 </div>
-

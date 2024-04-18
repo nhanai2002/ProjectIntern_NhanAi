@@ -11,6 +11,6 @@ namespace WebShopCore.ViewModel.Cart
     public class CartViewModel : BaseCart
     {
         public List<CartItemViewModel> CartItems { get; set; }
-        public CouponViewModel coupon { get; set; }
+        public CouponViewModel Coupon { get; set; }
     }
 }

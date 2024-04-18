@@ -22,15 +22,14 @@ namespace WebShopCore.Model
         public int Quantity { get; set; }
         public string Description { get; set; }
         public decimal BasePrice { get; set; }
-        public decimal SellPrice { get; set; }
-
-        
+        public decimal SellPrice { get; set; }        
     }
 
     public class Product : BaseProduct
     {
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<ProductFeedBack>? ProductFeedBacks { get; set; }
     }
 
 }

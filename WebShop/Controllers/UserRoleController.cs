@@ -32,7 +32,8 @@ namespace WebShop.Controllers
             _mapper = mapper;
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
         }
-        
+
+        [Display(Name = "Xem danh sách vai trò")]
         public IActionResult Index()
         {
             var data = _uow.RoleRepository
@@ -41,13 +42,14 @@ namespace WebShop.Controllers
             return View(data);
         }
 
-        public ActionResult Create()
+        [Display(Name = "Thêm vai trò")]
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(RoleCrudModel model)
+        public async Task<IActionResult> Create(RoleCrudModel model)
         {
             if (ModelState.IsValid)
             {
@@ -70,31 +72,34 @@ namespace WebShop.Controllers
         }
 
 
-        // kiểm tra xem nếu có user nào có vai trò đó thì không đc xóa
-        public async Task<ActionResult> Delete(int id)
+        [Display(Name = "Xóa vai trò")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
             var role = _uow.RoleRepository.FirstOrDefault(x => x.RoleId == id);
-            if(role != null)
+            // kiểm tra xem nếu có user nào có vai trò đó thì không đc xóa
+            var getRoleUser = _uow.UserRepository.BuildQuery(x => x.RoleId == role.RoleId).ToList();
+            if(role != null && !getRoleUser.Any())
             {
                 role.IsDeleted = true;
                 role.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
             else
             {
-                return View("Error", "Lỗi khi xóa");
+                return Json(new { success = false });
             }
         }
 
 
-       
+        [Display(Name = "Gán chức năng cho vai trò")]
         public IActionResult SetActionForRole(int RoleId)
         {
             var roleFormDb = _uow.RoleRepository
                 .BuildQuery(x => x.RoleId == RoleId && !x.IsDeleted && x.IsActive)
                 .Include(x => x.ActionRole)
-                .ThenInclude(x => x.ActionCtrl)
+                    .ThenInclude(x => x.ActionCtrl)
                 .FirstOrDefault();
 
             var role = new RoleCrudModel();
@@ -153,20 +158,25 @@ namespace WebShop.Controllers
         }
 
 
-        // set role cho user
-        public ActionResult SetRole(int UserId)     
+        [Display(Name = "Phân quyền")]
+        public IActionResult SetRole(int UserId)     
         {
             var error = new ErrorViewModel();
             var roleFormDb = _uow.RoleRepository
                         .BuildQuery(x =>!x.IsDeleted && x.IsActive).ToList();
             var roles = _mapper.Map<List<RoleViewModel>>(roleFormDb);
-
+            
+            roles.Add(new RoleViewModel
+            {
+                RoleId = 2,
+                Name = "Người dùng"
+            });
             var user = _uow.UserRepository
                 .BuildQuery(x => x.UserId == UserId && !x.IsDeleted)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.ActionRole)
-                .ThenInclude(x => x.ActionCtrl)
-                 .Select(x => _mapper.Map<AuthenticationModel>(x))
+                    .ThenInclude(x => x.ActionRole)
+                    .ThenInclude(x => x.ActionCtrl)
+                .Select(x => _mapper.Map<AuthenticationModel>(x))
                 .FirstOrDefault();
             if (user == null || roles == null) {
                 error.ErrorMessage = "Lỗi không thể set role";
@@ -176,13 +186,14 @@ namespace WebShop.Controllers
             var rs = new SetRoleViewModel();
             rs.UserId = UserId;
             rs.Username = user.UserName;
+            rs.RoleId = user.RoleId;
             rs.Roles = roles;
             
             return View(rs);
         }
 
         [HttpPost]
-        public async Task<ActionResult> SetRole(SetRoleViewModel model)
+        public async Task<IActionResult> SetRole(SetRoleViewModel model)
         {
             var error = new ErrorViewModel();
             try
@@ -232,7 +243,7 @@ namespace WebShop.Controllers
                 .ActionDescriptors
                 .Items
                 .OfType<ControllerActionDescriptor>()
-                .Where(a => a.ControllerName != "Home" && a.ControllerName != "Auth")
+                .Where(a => a.ControllerName != "Home" && a.ControllerName != "Auth" && a.ControllerName != "Setting")
                 .Where(a =>
                 {
                     var actionKey = $"{a.ControllerName}.{a.ActionName}";

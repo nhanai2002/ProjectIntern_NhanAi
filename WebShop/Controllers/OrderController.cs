@@ -33,8 +33,8 @@ namespace WebShop.Controllers
             _mapper = mapper;
             _env = env;
         }
-        [Display(Name = "Xem danh sách đơn hàng")]
 
+        [Display(Name = "Xem danh sách đơn hàng")]
         public IActionResult Index(string keyword, int? paymentStatus, int? orderStatus, int? shippingStatus)
         {
             var data = _uow.OrderRepository.BuildQuery(x => !x.IsDeleted);
@@ -68,7 +68,7 @@ namespace WebShop.Controllers
         {
             var model = new OrderCrudModel();
             model.ListUserViewModel = _uow.UserRepository.BuildQuery(x => !x.IsDeleted 
-            && x.RoleId == (int)SysEnum.DefaultRole.EndUser
+            //&& x.RoleId == (int)SysEnum.DefaultRole.EndUser
             && x.IsActive)
                 .Select(x => _mapper.Map<UserViewModel>(x))
                 .ToList();
@@ -132,15 +132,20 @@ namespace WebShop.Controllers
 
 
         [Display(Name = "Xóa đơn hàng")]
+        [HttpPost]
         public async Task<IActionResult> Delete(long orderId)
         {
             var order = _uow.OrderRepository.FirstOrDefault(x => x.OrderId == orderId);
             if (order != null)
             {
                 order.IsDeleted = true;
+                await _uow.CommitAsync();
+                return Json(new { success = true });
             }
-            await _uow.CommitAsync();
-            return RedirectToAction("Index");
+            else
+            {
+                return Json(new { success = false });
+            }
         }
 
         [Display(Name = "Sửa đơn hàng")]
@@ -179,6 +184,7 @@ namespace WebShop.Controllers
             return RedirectToAction("Index");
         }
 
+        [Display(Name = "Xuất hóa đơn pdf")]
         public async Task<IActionResult> GeneratePdf(long orderId)
         {
             var order = _uow.OrderRepository

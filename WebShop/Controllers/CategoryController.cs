@@ -64,19 +64,25 @@ namespace WebShop.Controllers
         }
 
         [Display(Name = "Xóa thể loại")]
+        [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
             var category = _uow.CategoryRepository.FirstOrDefault(x => x.CategoryId == id);
+            var check = _uow.ProductCategoryRepository.BuildQuery(x => x.CategoryId == category.CategoryId).ToList();
+            if(check.Any() || check.Count() > 0)
+            {
+                return Json(new { success = false , message = "hasproduct"});
+            }
             if (category != null)
             {
                 category.IsDeleted = true;
                 category.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
             else
             {
-                return View("Error", "Lỗi khi xóa");
+                return Json(new { success = false, message = "fail" });
             }
         }
 

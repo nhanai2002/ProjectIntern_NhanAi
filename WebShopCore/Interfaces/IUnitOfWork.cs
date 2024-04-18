@@ -32,5 +32,7 @@ namespace WebShopCore.Interfaces
         ICartHistoryRepository CartHistoryRepository { get; }
         IOrderRepository OrderRepository { get; }
         IOrderItemRepository OrderItemRepository { get; }
+        IFeedbackRepository FeedbackRepository { get; }
+        IProductFeedBackRepository ProductFeedBackRepository { get; }
     }
 }

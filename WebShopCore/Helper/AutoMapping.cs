@@ -10,10 +10,12 @@ using WebShopCore.ViewModel.Auth;
 using WebShopCore.ViewModel.Cart;
 using WebShopCore.ViewModel.Category;
 using WebShopCore.ViewModel.Coupon;
+using WebShopCore.ViewModel.Feedback;
 using WebShopCore.ViewModel.Image;
 using WebShopCore.ViewModel.Order;
 using WebShopCore.ViewModel.Product;
 using WebShopCore.ViewModel.ProductCategory;
+using WebShopCore.ViewModel.ProductFeedBack;
 using WebShopCore.ViewModel.User;
 using WebShopCore.ViewModel.UserRole;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -61,6 +63,10 @@ namespace WebShopCore.Helper
             CreateMap<AuthenticationModel, User>().ReverseMap();
             CreateMap<UserCrudModel, User>().ReverseMap();
             CreateMap<UserViewModel, User>().ReverseMap();
+
+            // feedback
+            CreateMap<FeedbackCrudModel, Feedback>().ReverseMap();
+            CreateMap<FeedbackViewModel, Feedback>().ReverseMap();
 
         }
     }

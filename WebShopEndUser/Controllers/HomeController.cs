@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using WebShopCore.Helper;
 using WebShopCore.Interfaces;
+using WebShopCore.Model;
 using WebShopCore.ViewModel.Category;
+using WebShopCore.ViewModel.Feedback;
 using WebShopCore.ViewModel.Order;
 using WebShopCore.ViewModel.Product;
 using WebShopEndUser.Models;
@@ -60,6 +62,33 @@ namespace WebShopEndUser.Controllers
             var result = _mapper.Map<List<ProductViewModel>>(data.ToList());
             return View(result);
         }
+
+
+        public IActionResult Details(int productId)
+        {
+            var product = _uow.ProductRepository
+                .BuildQuery(x => x.ProductId == productId && x.IsActive && !x.IsDeleted)
+                .Include(x => x.ProductImages)
+                    .ThenInclude(x => x.Image)
+                .Select(x => _mapper.Map<ProductViewModel>(x))
+                .FirstOrDefault();
+            if (product == null) return NotFound("Lỗi không tìm thấy chi tiết sản phẩm");
+
+            var productFeedback = _uow.ProductFeedBackRepository
+                .BuildQuery(x => x.ProductId == productId)   
+                .Select(x => x.FeedbackId)
+                .ToList();
+            var feedback = _uow.FeedbackRepository.BuildQuery(x => productFeedback.Contains(x.FeedbackId))
+                .Include(x => x.User)
+                .Include(x => x.Images)
+                .Select(x => _mapper.Map<FeedbackViewModel>(x))
+                .ToList();
+            product.Feedbacks = feedback;
+
+            return View(product);
+        }
+
+
         [LoginRequired]
         public IActionResult OrderHistory()
         {
@@ -67,6 +96,8 @@ namespace WebShopEndUser.Controllers
             var order = _uow.OrderRepository.BuildQuery(x => x.CreateByUserId == user.UserId && !x.IsDeleted)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
+                    .ThenInclude(x => x.ProductImages)
+                    .ThenInclude(x => x.Image)
                 .Select(x => _mapper.Map<OrderViewModel>(x))
                 .ToList();
             return View(order);

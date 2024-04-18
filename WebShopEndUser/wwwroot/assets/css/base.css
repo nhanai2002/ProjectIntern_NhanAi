@@ -1,101 +1,113 @@
 /* Cấu hình chung */
-:root{
+:root {
     --primary-color: #8B0000;
-    --white-color:#fff;
+    --white-color: #fff;
     --black-color: #000;
     --text-color: #333;
     --border-color: #dbdbdb;
     --star-color: #ffce3e;
-
     --header-height: 120px;
     --navbar-height: 34px;
     --header-with-sreach-height: calc(var(--header-height) - var(--navbar-height));
-
 }
 
-*{
+* {
     box-sizing: inherit;
 }
 
-html{
-    font-size: 100%;            /*10px*/
-    line-height: 1rem;         /*16px*/
+html {
+    font-size: 100%; /*10px*/
+    line-height: 1rem; /*16px*/
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }
-body{
+
+body {
     margin: 0;
 }
 
-.grid{
+.grid {
     width: 1264px;
     max-width: 100%;
     margin: 0px;
     padding: 0 16px;
 }
 
-.grid__full-width{
+.grid__full-width {
     width: 100%;
 }
 
-.grid__row{
+.grid__row {
     display: flex;
     flex-wrap: wrap;
     margin-left: -5px;
     margin-right: -5px;
 }
 
-.grid__column-2{
+.grid__half-width {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 50%;
+}
+
+.grid__column-2 {
     padding-left: 5px;
     padding-right: 5px;
     width: 16.6667%;
 }
 
-.grid__column-2-5{
+.grid__column-2-5 {
     padding-left: 5px;
     padding-right: 5px;
     width: 20%;
 }
 
-.grid__column-10{
+.grid__column-2-4 {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 25%;
+}
+
+
+.grid__column-10 {
     padding-left: 5px;
     padding-right: 5px;
     width: 83.3334%;
 }
-@keyframes fadeIn{
-    from{
-        opacity: 0;                            /*khi apply vào thì tính lúc bắt đầu from đến lúc kết thúc to*/
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /*khi apply vào thì tính lúc bắt đầu from đến lúc kết thúc to*/
     }
-    to{
+
+    to {
         opacity: 1;
     }
-
 }
 
-@keyframes growth{
-    from{
-        transform: scale(var(--growth-from));             /*lớn lên nên dùng transform, đặt đại 1 biến nào đó*/
+@keyframes growth {
+    from {
+        transform: scale(var(--growth-from)); /*lớn lên nên dùng transform, đặt đại 1 biến nào đó*/
     }
-    to{
+
+    to {
         transform: scale(var(--growth-to));
     }
-
-
 }
 
 /* Phân trang */
-.pagination{
+.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     list-style: none;
 }
 
-.pagination-item{
+.pagination-item {
     margin: 0 12px;
 }
 
-.pagination-item__link{
+.pagination-item__link {
     --height: 30px;
     display: block;
     text-decoration: none;
@@ -108,16 +120,15 @@ body{
     border-radius: 2px;
 }
 
-.pagination-item--active .pagination-item__link{
+.pagination-item--active .pagination-item__link {
     background-color: var(--primary-color);
     color: var(--white-color);
 }
 
-.pagination-item--active .pagination-item__link:hover{
-    background-color: #ad0a0a;
-}
+    .pagination-item--active .pagination-item__link:hover {
+        background-color: #ad0a0a;
+    }
 
-/*Button*/
 .btn {
     min-width: 124px;
     height: 34px;
@@ -147,7 +158,6 @@ body{
 
 
 .btn-apply {
-    margin-left: 10px;
     background-color: rgba(29, 169, 29, 0.8);
     color: white;
 }
@@ -165,3 +175,36 @@ body{
     .btn-comback:hover {
         background-color: #9ca1a5;
     }
+
+
+.btn.btn--disable {
+    color: white;
+    cursor: default;
+    background-color: #c3c3c3;
+}
+
+/* modal */
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    animation: fadeIn linear 0.1s;
+}
+
+.modal__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__body {
+    margin: auto;
+    position: relative;
+    --growth-from: 0.7;
+    --growth-to: 1;
+    animation: growth linear 0.1s;
+}

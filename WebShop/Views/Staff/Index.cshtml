@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebShopCore.ViewModel.Auth.AuthenticationModel>
+@{
+    ViewData["Title"] = "Danh sách nhân viên";
+    Layout = "_HomeAdminLayout";
+    ViewBag.active = "8";
+}
+
+<div class="category-content-list category-content-list--active">
+    <div class="category-content__heading">
+        Quản lý nhân viên
+    </div>
+    <div class="grid">
+        <div class="grid__row category-content__lable">
+            <div class="grid__column-2">
+                <span>Tên</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Mã user</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Email</span>
+            </div>
+            <div class="grid__column-2">
+            </div>
+            <div class="grid__column-2">
+                <span>Số điện thoại</span>
+            </div>
+            <div class="grid__column-2">
+                <span>Thao tác</span>
+            </div>
+        </div>
+
+
+        @if (Model != null)
+        {
+            <div class="grid__row category-content__item">
+                @foreach (var user in Model)
+                {
+                    <div class="grid__column-2 category-content__item-name">
+                        <span>@user.Name</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@user.UserGuid</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@user.Email</span>
+                    </div>
+                    <div class="grid__column-2">
+                    </div>
+                    <div class="grid__column-2">
+                        <span>@user.Phone</span>
+                    </div>
+                    <div class="grid__column-2">
+                        <span>
+                            <a asp-action="Delete" asp-route-id="@user.UserId" title="Xóa">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@user.UserId" title="Sửa">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="ResetPassword" asp-route-id="@user.UserId" title="Đổi mật khẩu">
+                                <i class="fa-solid fa-key"></i>
+                            </a>
+                            <a asp-action="SetRole" asp-controller="UserRole" asp-route-UserId="@user.UserId" title="Phân quyền">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

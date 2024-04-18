@@ -83,6 +83,7 @@ namespace WebShop.Controllers
             return View(model);
         }
         [Display(Name = "Xóa coupon")]
+        [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
             var coupon = _uow.CouponRepository.FirstOrDefault(x => x.Id == id);
@@ -91,8 +92,12 @@ namespace WebShop.Controllers
                 coupon.IsDeleted = true;
                 coupon.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
+                return Json(new { success = true });
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return Json(new { success = false, message = "Lỗi khi xóa" });
+            }
         }
 
         [Display(Name = "Chỉnh sửa coupon")]
@@ -146,7 +151,9 @@ namespace WebShop.Controllers
             return View(model);
         }
 
+
         [Display(Name = "Thay đổi trạng thái coupon")]
+        [HttpPost]
         public async Task<ActionResult> SetStatus(int id)
         {
             var coupon = _uow.CouponRepository.FirstOrDefault(x => x.Id == id);
@@ -155,8 +162,12 @@ namespace WebShop.Controllers
                 coupon.UpdatedAt = DateTime.Now;
                 coupon.IsActive = !coupon.IsActive;
                 await _uow.CommitAsync();
+                return Json(new { success = true });
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return Json(new { success = false });
+            }
         }
 
 

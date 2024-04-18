@@ -165,6 +165,8 @@
 .header__navbar-user:hover .header__navbar-user-menu {
     display: block;
 }
+
+
 .header__navbar-user-link {
     display: block;
     text-decoration: none;
@@ -172,6 +174,10 @@
     padding: 4px 16px;
 }
 
+    .header__navbar-user-link:hover{
+        background-color: #eee;
+        text-decoration: none;
+    }
 
 
 /* Logo */

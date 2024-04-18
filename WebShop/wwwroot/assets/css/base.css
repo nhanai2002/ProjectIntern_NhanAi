@@ -12,6 +12,10 @@
     --header-with-sreach-height: calc(var(--header-height) - var(--navbar-height));
 
 }
+a:hover {
+    text-decoration: none !important;
+    color: #333 !important;
+}
 
 *{
     box-sizing: inherit;
@@ -153,8 +157,9 @@ body{
     background-color: #dc3545;
     color: var(--white-color);
 }
-    .btn-checkout:hover{
+    .btn-checkout:hover {
         background-color: #e64757;
+        color: var(--white-color) !important;
     }
 
 
@@ -162,15 +167,16 @@ body{
     background-color: rgba(29, 169, 29, 0.8);
     color: white;
 }
- .btn-apply:hover{
-    background-color: rgba(29, 169, 29, 0.6);
-    color: white;
-  }
+    .btn-apply:hover {
+        background-color: rgba(29, 169, 29, 0.6);
+        color: white !important;
+    }
 
 .btn-comback{
     background-color: #6c757d;
     color: var(--white-color);
 }
-    .btn-comback:hover{
-    background-color: #9ca1a5;
+    .btn-comback:hover {
+        background-color: #9ca1a5;
+        color: var(--white-color) !important;
     }

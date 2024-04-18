@@ -9,5 +9,6 @@ namespace WebShopCore.Interfaces
 {
     public interface IOrderRepository : IRepository<Order>
     {
+        Order GetById(long id);
     }
 }

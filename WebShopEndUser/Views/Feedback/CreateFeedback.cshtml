@@ -1,0 +1,116 @@
+﻿@model WebShopCore.ViewModel.ProductFeedBack.FeedbackCrudModel
+@{
+    ViewData["Title"] = "Đánh giá sản phẩm";
+}
+
+<div class="container__feedback-container">
+    <div class="container__feedback-heading">
+        <div class="container__feedback-heading-lable">Đánh giá sản phẩm</div>
+    </div>
+    <form asp-action="CreateFeedback" asp-controller="Feedback" method="post" enctype="multipart/form-data" class="container__feedback--form">
+        <input asp-for="OrderId" hidden />
+        <input asp-for="UserId" hidden />
+        <input asp-for="Rating" id="Rating" hidden/>
+        <div class="feedback__star">
+            <i onclick="rate(1)" class="feedback__star-icon fa-solid fa-star"></i>
+            <i onclick="rate(2)" class="feedback__star-icon fa-solid fa-star"></i>
+            <i onclick="rate(3)" class="feedback__star-icon fa-solid fa-star"></i>
+            <i onclick="rate(4)" class="feedback__star-icon fa-solid fa-star"></i>
+            <i onclick="rate(5)" class="feedback__star-icon fa-solid fa-star"></i>
+        </div>
+        @if (Model.Products.Count() > 0)
+        {
+            foreach(var product in Model.Products)
+            {
+                var img = product.ProductImages.FirstOrDefault().Image.Url;
+                <div class="feedback__product">
+                    <img src="@img" class="feedback__product--img">
+                    <div class="feedback__product--info">
+                        <div class="feedback__product--info-item">
+                            <div class="feedback__product--info-lable">Tên:</div>
+                            <div class="feedback__product--info-value">@product.Name</div>
+                        </div>
+                        <div class="feedback__product--info-item">
+                            <div class="feedback__product--info-lable">Giá:</div>
+                            <div class="feedback__product--info-value">@product.SellPrice</div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+
+        <div class="feedback__content">
+            <div class="feedback__content-heading">Viết đánh giá</div>
+            <div class="feedback__content-value">
+                <input type="text" asp-for="Content" id="feedback__input" class="feedback__content-input" placeholder="Bình luận..." minlength="5" maxlength="150">
+            </div>
+            <div id="feedback-amout" class="feedback__content-amount">0/150</div>
+        </div>
+
+
+        <!-- Mặc dù thẻ input ẩn đi, nhưng đặt id như vậy thì lable sẽ viết cho id -->
+        <div class="feedback__image">
+            <div class="feedback__image-heading">Chọn 1 hoặc nhiều hình ảnh (Tối đa 5 ảnh)</div>
+            <input type="file" accept="image/*" asp-for="FileImages" id="file" onchange="showFileImage(event)" multiple style="display: none;">
+            <label for="file" class="feedback__image-item">
+                <i class="feedback__image-btn fa-solid fa-plus"></i>
+            </label>
+            <br>
+            <div id="output"></div>
+        </div>
+
+
+        <div class="feedback__btn">
+            <button type="submit" class="btn btn-checkout">Gửi đánh giá</button>
+        </div>
+
+
+    </form>
+
+</div>
+@section Scripts{
+    <script>
+        function rate(star) {
+            let stars = document.querySelectorAll('.feedback__star-icon');
+            let i;
+            for (i = 0; i < stars.length; i++) {
+                stars[i].classList.remove('selected');
+            }
+            for (i = 0; i < star; i++) {
+                stars[i].classList.add('selected');
+            }
+            let rating = document.querySelector('#Rating');
+            rating.value = star;
+        }
+
+        let inputElement = document.querySelector('#feedback__input');
+        let amountInputElement = document.querySelector('#feedback-amout');
+
+        inputElement.oninput = (e) => {
+            amountInputElement.innerText = e.target.value.length + '/' + inputElement.maxLength;
+        }
+
+
+        function showFileImage(event) {
+            var output = document.getElementById('output');
+            var files = event.target.files;
+            if (files.length > 5) {
+                alert("Bạn chỉ có thể chọn tối đa 5 hình ảnh.");
+                return;
+            }
+            output.innerHTML = ""; // Xóa hình ảnh hiện tại
+            for (var i = 0; i < files.length; i++) {
+                var img = document.createElement("img");
+                img.src = URL.createObjectURL(files[i]);
+                img.classList.add("feedback__image-show");
+                img.onload = function () {
+                    URL.revokeObjectURL(img.src) // giải phóng bộ nhớ
+                }
+                output.appendChild(img);
+            }
+        }
+
+    </script>
+}
+

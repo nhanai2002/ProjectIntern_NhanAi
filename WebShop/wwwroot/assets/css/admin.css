@@ -86,7 +86,7 @@
 .category-content-list {
     color: var(--text-color);
     background-color: white;
-    width: 950px;
+    width: 900px;
     margin: 15px;
     /* display: none; */
 }
@@ -126,7 +126,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
 }
 
 .category-content__item-name {
@@ -165,7 +164,7 @@
 }
 
 .category-search__select {
-    width: 155px;
+    width: 180px;
     height: 40px;
     border: none;
 }

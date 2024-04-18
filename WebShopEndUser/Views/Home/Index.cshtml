@@ -58,7 +58,7 @@
     foreach (var item in Model)
     {
         <div class="grid__column-2">
-            <a href="#" class="home-product-item">
+            <a asp-action="Details" asp-controller="Home" asp-route-productId="@item.ProductId" class="home-product-item">
                 @if (item.ProductImages.Count() > 0)
                 {
                     var img = item.ProductImages.FirstOrDefault().Image.Url;

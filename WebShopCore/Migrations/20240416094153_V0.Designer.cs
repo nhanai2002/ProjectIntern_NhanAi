@@ -11,7 +11,7 @@ using WebShopCore;
 namespace WebShopCore.Migrations
 {
     [DbContext(typeof(WebShopDbContext))]
-    [Migration("20240314142651_V0")]
+    [Migration("20240416094153_V0")]
     partial class V0
     {
         /// <inheritdoc />
@@ -275,6 +275,45 @@ namespace WebShopCore.Migrations
                     b.ToTable("couponHistories");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("EvaluateAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Feedback");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Image", b =>
                 {
                     b.Property<int>("ImageId")
@@ -283,6 +322,9 @@ namespace WebShopCore.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("FeedbackId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -298,6 +340,8 @@ namespace WebShopCore.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("ImageId");
+
+                    b.HasIndex("FeedbackId");
 
                     b.ToTable("images");
                 });
@@ -323,6 +367,9 @@ namespace WebShopCore.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("FeedbackId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
@@ -336,6 +383,9 @@ namespace WebShopCore.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -355,6 +405,8 @@ namespace WebShopCore.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("CreateByUserId");
+
+                    b.HasIndex("FeedbackId");
 
                     b.ToTable("orders");
                 });
@@ -479,6 +531,40 @@ namespace WebShopCore.Migrations
                     b.ToTable("ProductCategory", (string)null);
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.ProductFeedBack", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("FeedbackId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeedbackId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductFeedBack");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.ProductImage", b =>
                 {
                     b.Property<int>("Id")
@@ -544,20 +630,20 @@ namespace WebShopCore.Migrations
                         new
                         {
                             RoleId = 1,
-                            CreatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2643),
+                            CreatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(893),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2623)
+                            UpdatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(875)
                         },
                         new
                         {
                             RoleId = 2,
-                            CreatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2688),
+                            CreatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1004),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "EndUser",
-                            UpdatedAt = new DateTime(2024, 3, 14, 21, 26, 51, 280, DateTimeKind.Local).AddTicks(2688)
+                            UpdatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1003)
                         });
                 });
 
@@ -752,11 +838,37 @@ namespace WebShopCore.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.Feedback", b =>
+                {
+                    b.HasOne("WebShopCore.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.Image", b =>
+                {
+                    b.HasOne("WebShopCore.Model.Feedback", "Feedback")
+                        .WithMany("Images")
+                        .HasForeignKey("FeedbackId");
+
+                    b.Navigation("Feedback");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Order", b =>
                 {
                     b.HasOne("WebShopCore.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("CreateByUserId");
+
+                    b.HasOne("WebShopCore.Model.Feedback", "Feedback")
+                        .WithMany()
+                        .HasForeignKey("FeedbackId");
+
+                    b.Navigation("Feedback");
 
                     b.Navigation("User");
                 });
@@ -797,6 +909,23 @@ namespace WebShopCore.Migrations
                         .HasConstraintName("FK_ProductCategory_Product");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.ProductFeedBack", b =>
+                {
+                    b.HasOne("WebShopCore.Model.Feedback", "Feedback")
+                        .WithMany("ProductFeedBacks")
+                        .HasForeignKey("FeedbackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebShopCore.Model.Product", "Product")
+                        .WithMany("ProductFeedBacks")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Feedback");
 
                     b.Navigation("Product");
                 });
@@ -852,6 +981,13 @@ namespace WebShopCore.Migrations
                     b.Navigation("ProductCategories");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.Feedback", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("ProductFeedBacks");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Order", b =>
                 {
                     b.Navigation("OrderItems");
@@ -860,6 +996,8 @@ namespace WebShopCore.Migrations
             modelBuilder.Entity("WebShopCore.Model.Product", b =>
                 {
                     b.Navigation("ProductCategories");
+
+                    b.Navigation("ProductFeedBacks");
 
                     b.Navigation("ProductImages");
                 });

@@ -14,7 +14,13 @@
         <li class="category-item  @((active == "2") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="User" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-user"></i>
-                Quản lý User
+                Quản lý Người dùng
+            </a>
+        </li>
+        <li class="category-item  @((active == "8") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Staff" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-user-shield"></i>
+                Quản lý Nhân viên
             </a>
         </li>
         <li class="category-item @((active == "3") ? "category-item--active" :"" ) ">

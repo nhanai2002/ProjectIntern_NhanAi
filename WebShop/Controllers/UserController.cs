@@ -14,7 +14,7 @@ using WebShopCore.ViewModel.User;
 
 namespace WebShop.Controllers
 {
-    [Display(Name = "User")]
+    [Display(Name = "Người dùng")]
     [LoginRequired]
     public class UserController : Controller
     {
@@ -26,20 +26,20 @@ namespace WebShop.Controllers
             _mapper = mapper;
         }
 
-        [Display(Name = "Xem danh sách User")]
+        [Display(Name = "Xem danh sách người dùng")]
         public IActionResult Index()
         {
             var users = _uow.UserRepository
                 .BuildQuery(x => !x.IsDeleted && x.RoleId == (int)SysEnum.DefaultRole.EndUser)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.ActionRole)
-                .ThenInclude(x => x.ActionCtrl)
+                    .ThenInclude(x => x.ActionRole)
+                    .ThenInclude(x => x.ActionCtrl)
                 .Select(x => _mapper.Map<AuthenticationModel>(x))
                 .ToList();
             return View(users);
         }
 
-        [Display(Name = "Đổi mật khẩu User")]
+        [Display(Name = "Đổi mật khẩu người dùng")]
         public ActionResult ChangePassword(int userId)
         {
             var user = _uow.UserRepository.FirstOrDefault(x => x.UserId == userId);
@@ -65,7 +65,7 @@ namespace WebShop.Controllers
                 user.Password = model.Password.HasPassword();
                 user.UpdatedAt = DateTime.Now;
                 await _uow.CommitAsync();
-                return RedirectToAction("Login");
+                return RedirectToAction("Index");
 
             }
             return View(model);

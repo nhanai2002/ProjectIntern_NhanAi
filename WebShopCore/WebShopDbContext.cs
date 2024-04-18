@@ -27,7 +27,8 @@ namespace WebShopCore
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             modelBuilder.Entity<Cart>().Property(u => u.CouponId).IsRequired(false); // Cho phép null
-
+            modelBuilder.Entity<Order>().Property(u => u.FeedbackId).IsRequired(false); // Cho phép null
+            modelBuilder.Entity<Image>().Property(u => u.FeedbackId).IsRequired(false);
 
 
             modelBuilder.Entity<ProductCategory>(e => {

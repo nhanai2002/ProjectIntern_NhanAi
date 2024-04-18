@@ -18,6 +18,16 @@
     display: block;
 }
 
+.home-cart-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #eee;
+}
+
 .home-cart-list {
     display: flex;
     justify-content: center;
@@ -161,3 +171,19 @@
     justify-content: center;
     margin-top: 20px;
 }
+
+/* Coupon */
+.home-cart-coupon {
+    display: flex;
+    margin-top: 20px;
+}
+
+.home-cart-coupon__input {
+    width: 250px;
+    padding: 0 10px;
+    border: 1px solid #eee;
+}
+
+    .home-cart-coupon__input:focus {
+        outline: none;
+    }

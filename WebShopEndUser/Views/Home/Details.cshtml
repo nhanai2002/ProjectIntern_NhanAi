@@ -1,0 +1,228 @@
+﻿@using WebShopCore.Helper
+@model WebShopCore.ViewModel.Product.ProductViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var user = Context.Session.GetCurrentAuthentication();
+}
+
+@if(Model != null)
+{
+    <!-- container -->
+    <div class="app_container">
+        <div class="app_container-lable">
+            <span class="app_container-lable-msg">CHI TIẾT SẢN PHẨM</span>
+        </div>
+        <input type="hidden" id="productId" value="@Model.ProductId" />
+        <div class="detail">
+            <div class="detail__item">
+                <div class="slideshow-container">
+                    @foreach (var img in Model.ProductImages)
+                    {
+                        var image = img.Image.Url;
+                        <div class="slide-item">
+                            <div class="slide__item-img" style="background-image: url(@image);"></div>
+                        </div>
+                    }
+                    <div onclick="slideNav(-1)" class="slide-item__nav pre">
+                        <i class="slide-item__icon fa-solid fa-angle-left"></i>
+                    </div>
+
+                    <div onclick="slideNav(1)" class="slide-item__nav next">
+                        <i class="slide-item__icon fa-solid fa-angle-right"></i>
+                    </div>
+
+
+                </div>
+                
+            </div>
+
+            <div class="detail__content">
+                <span class="detail__favourite">Yêu thích+</span>
+
+                <span class="detail__content-header">@Model.Name</span>
+                <div class="detail__content-description">@Model.Description</div>
+
+                <div class="detail__price">
+                    <span class="detail__price-old">
+                        @(String.Format(info, "{0:c}", Model.BasePrice))
+                    </span>
+                    <span class="detail__price-current">
+                        @(String.Format(info, "{0:c}", Model.SellPrice))
+                    </span>
+                </div>
+
+                <div class="detail__amount">
+
+                    <span class="detail__amount-lable">Số lượng</span>
+
+                    <button class="detail__amount-btn" onclick="handleMinus()">
+                        <i class="detail__amount-icon fa-solid fa-minus"></i>
+                    </button>
+
+                    <input type="text" value="1" name="amount" id="amount" class="detail__amount-input">
+
+                    <button class="detail__amount-btn" onclick="handleAdd()">
+                        <i class="detail__amount-icon fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                @if(user == null)
+                {
+                    <div class="detail__btn">
+                        <a asp-action="Login" asp-controller="Auth">
+                            <button class="detail__btn-add">+ Thêm vào giỏ hàng</button>
+                        </a>
+                        <button class="detail__btn-buy-now">Mua ngay</button>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="detail__btn">
+                        <button onclick="addToCart()" class="detail__btn-add">+ Thêm vào giỏ hàng</button>
+                        <button class="detail__btn-buy-now">Mua ngay</button>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+
+
+
+        <!-- ĐÁNH GIÁ SẢN PHẨM -->
+        <div class="comment">
+            <div class="comment__header">
+                ĐÁNH GIÁ SẢN PHẨM
+            </div>
+            <div class="comment__list">
+                <!-- vòng lặp -->
+                @if(Model.Feedbacks.Count() > 0)
+                {
+                    foreach(var feedback in Model.Feedbacks)
+                    {
+                        <div class="comment__list-item">
+                            <div class="comment__list-item-avatar">
+                                <img src="@feedback.User.Avatar" alt="">
+                                <span class="comment__list-item-name">@feedback.User.Name</span>
+                                
+                                <span class="comment__list-item-rate">
+                                    @for( int i = 0; i< feedback.Rating; i++)
+                                    {
+                                        <i class="comment__list-icon selected fa-solid fa-star"></i>
+                                    }
+                                    @for(int i = feedback.Rating; i < 5 ; i++)
+                                    {
+                                        <i class="comment__list-icon fa-solid fa-star"></i>
+                                    }
+                                </span>
+                                <span class="comment__list-item-time">@feedback.EvaluateAt</span>
+                            </div>
+
+                            <div class="comment__list-item-content">@feedback.Content</div>
+
+                            <div class="comment__list-item-img--list">
+                                <!-- Vòng lặp -->
+                                @foreach(var i in feedback.Images)
+                                {
+                                    <img src="@i.Url" class="comment__list-item-img--item" />
+                                }
+                            </div>
+                        </div>
+
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<!-- do để bên main.js thì lỗi -->
+@section Scripts{   
+    <script>
+
+        var slideIndex;
+        function showSlides() {
+            var i;
+            var slides = document.querySelectorAll('.slide-item');
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+
+            slides[slideIndex] = slides[slideIndex].style.display = 'block';
+            slideIndex++;
+            if (slideIndex > slides.length - 1) {
+                slideIndex = 0;
+            }
+
+            timer = setTimeout(showSlides, 4000);
+        }
+        showSlides(slideIndex = 0);
+
+        function slideNav(vt) {
+            clearTimeout(timer);
+            showSlides(slideIndex + vt);
+        }
+
+        // xử lý tăng giảm sp ở detail
+        let amountElement = document.getElementById('amount');
+
+        let amount = amountElement.value;
+
+        let showAmount = (amount) => {
+            amountElement.value = amount;
+        }
+
+        let handleAdd = () => {
+            amount++;
+            showAmount(amount);
+        }
+
+        let handleMinus = () => {
+            if (amount == 1) {
+                return;
+            }
+            amount--;
+            showAmount(amount);
+        }
+
+        function addToCart(){
+            const productId = $("#productId").val();
+            const sl = $("#amount").val();
+
+            $.ajax({
+                data:{
+                    productId: productId,
+                    quantity: sl,
+                },
+                type: "GET",
+                dataType: "json",
+                url: '@Url.Action("CreateCart","Cart")',
+                cache: false,
+                success: function (resp) {
+                    if (resp.success) {
+                        alert("Thêm vào giỏ hàng thành công");
+                    } else {
+                        alert("Thêm vào giỏ hàng thất bại");
+                    }
+                },
+
+                error: function (error) {
+                    alert("Lỗi")
+                },
+                complete: function () {
+                    window.location.reload();
+                }
+
+            });
+        }
+
+
+
+
+
+    </script>
+}
+

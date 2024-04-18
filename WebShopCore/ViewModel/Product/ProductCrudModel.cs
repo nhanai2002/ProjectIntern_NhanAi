@@ -12,7 +12,7 @@ namespace WebShopCore.ViewModel.Product
     {
         //public IFormFile? FileImage { get; set; }
         public List<CategoryViewModel>? ListCategoryViewModel { get; set; }
-        public int[]? SelectedCategories { get; set; }
+        public int[] SelectedCategories { get; set; }
 
     }
 }

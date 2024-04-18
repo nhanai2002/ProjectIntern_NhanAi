@@ -27,22 +27,43 @@ namespace WebShop.Controllers
             _fileUploadService = fileUploadService;
             _mapper = mapper;
         }
+
+
         [Display(Name = "Xem hình ảnh của sản phẩm")]
-        public ActionResult ProductImages(int productId)
+        public IActionResult ProductImages(int productId)
         {
-            var imgProduct = _uow.ProductImageRepository
-                .BuildQuery(x => x.ProductId == productId)
-                .Select(x => x.ImageId).ToList();
-            var rs = _uow.ImageRepository
-                .BuildQuery(x => imgProduct.Contains(x.ImageId))
-                .Select(x => _mapper.Map<ImageViewModel>(x))
-                .ToList();
-            ViewData["ProductId"] = productId;
-            return View(rs);
+            try
+            {
+                var product = _uow.ProductRepository.FirstOrDefault(x => x.ProductId == productId);
+                if (product != null)
+                {
+                    var imgProduct = _uow.ProductImageRepository
+                                        .BuildQuery(x => x.ProductId == product.ProductId)
+                                        .Select(x => x.ImageId)
+                                        .ToList();
+                    var rs = _uow.ImageRepository
+                                        .BuildQuery(x => imgProduct.Contains(x.ImageId))
+                                        .Select(x => _mapper.Map<ImageViewModel>(x))
+                                        .ToList();
+                    ViewData["ProductId"] = product.ProductId;
+                    ViewData["ProductCode"] = product.Code;
+                    return View(rs);
+                }
+                else
+                {
+                    return View("Error", "Sản phẩm không tồn tại!");
+                }
+            }
+            catch
+            {
+                return View("Error", "Đã xảy ra lỗi!");
+            }
         }
 
+
+
         [Display(Name = "Thêm ảnh cho sản phẩm")]
-        public ActionResult CreateProductImages(int productId)
+        public IActionResult CreateProductImages(int productId)
         {
             var modelError = new ErrorViewModel();
             var product = _uow.ProductRepository.FirstOrDefault(x => x.ProductId == productId);
@@ -60,7 +81,7 @@ namespace WebShop.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProductImages(ProductImageCrudModel imgCrud)
+        public async Task<IActionResult> CreateProductImages(ProductImageCrudModel imgCrud)
         {
             if (ModelState.IsValid)
             {
@@ -95,8 +116,10 @@ namespace WebShop.Controllers
                     await _uow.CommitAsync();
                     return RedirectToAction("ProductImages", new { productId = imgCrud.ProductId });
                 }
-                catch
+                catch (Exception ex)
                 {
+                    var a = ex.InnerException;
+                    var b = ex.Message;
                     error.ErrorMessage = "Lỗi khi tạo hình ảnh sản phẩm";
                     return View("Error", error);
                 }
@@ -108,17 +131,29 @@ namespace WebShop.Controllers
             }
         }
 
+
+
         [Display(Name = "Xóa ảnh của sản phẩm")]
-        public async Task<ActionResult> DeleteProductImages(int id, int productId)
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductImages(int id, int productId)
         {
-            var imgProduct = _uow.ProductImageRepository.BuildQuery(x => x.ImageId == id).AsNoTracking().FirstOrDefault();
-            _uow.ProductImageRepository.Delete(imgProduct);
-            await _uow.CommitAsync();
-            return RedirectToAction("ProductImage", productId);
+            try
+            {
+                var imgProduct = _uow.ProductImageRepository.BuildQuery(x => x.ImageId == id && x.ProductId == productId).AsNoTracking().FirstOrDefault();
+                _uow.ProductImageRepository.Delete(imgProduct);
+                await _uow.CommitAsync();
+                return Json(new { success = true });
+            }
+            catch
+            {
+                return Json(new { success = false });
+            }
         }
 
+
+
         [Display(Name = "Chỉnh sửa ảnh cho sản phẩm")]
-        public ActionResult EditProductImages(int id, int productId) 
+        public IActionResult EditProductImages(int id, int productId) 
         {
             var error = new ErrorViewModel();
             var img = _uow.ImageRepository.FirstOrDefault(x => x.ImageId == id);
@@ -137,7 +172,7 @@ namespace WebShop.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditProductImages(ImageCrudModel imgCrud)
+        public async Task<IActionResult> EditProductImages(ImageCrudModel imgCrud)
         {
             if (ModelState.IsValid)
             {
