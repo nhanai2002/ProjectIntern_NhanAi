@@ -75,12 +75,14 @@
                     </div>
                     @if (item.OrderItems != null && item.OrderItems.Count() > 0)
                     {
-                        @foreach (var orderItem in item.OrderItems)
-                        {
-                            <div class="grid__column-2">
-                                @orderItem.Product.Name
-                            </div>
-                        }
+                        <div class="grid__column-2 category-content__item-name">
+
+                            @foreach (var orderItem in item.OrderItems)
+                            {
+                                @(orderItem.Product.Name + ", ")
+                            }
+                        </div>
+
                     }
                     <div class="grid__column-2">
                         <span>@(String.Format(info, "{0:c}", @item.Total))</span>
@@ -93,7 +95,7 @@
                             <a asp-action="Update" asp-route-orderId="@item.OrderId" title="Sửa">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
-                            <a asp-action="GeneratePdf" asp-route-orderId="@item.OrderId" title="Xuất hóa đơn">
+                            <a asp-action="ExportPdf" asp-route-orderId="@item.OrderId" title="Xuất hóa đơn">
                                 <i class="fa-solid fa-print"></i>
                             </a>
                         </span>

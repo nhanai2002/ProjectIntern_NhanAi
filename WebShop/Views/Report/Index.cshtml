@@ -1,0 +1,83 @@
+﻿@using static WebShopCore.Const.SysEnum;
+@model List<WebShopCore.ViewModel.Home.ProductDashboardViewModel>
+@{
+    ViewData["Title"] = "Thống kê";
+    Layout = "_HomeAdminLayout";
+    ViewBag.active = "9";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<div class="category-content-list category-content-list--active">
+    <div class="category-content__heading">
+        Doanh thu sản phẩm tháng @DateTime.Now.Month
+    </div>
+
+    <div class="category-search">
+        <form asp-action="Index" class="category-search__form">
+            <input type="text" name="keyword" class="category-search__input" placeholder="Từ khóa..." />
+            <input type="datetime-local" name="startTime" class="category-search__input" />
+            <input type="datetime-local" name="endTime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" class="category-search__input" />
+            
+            <button type="submit" class="category-search__btn">
+                <i class="category-search__icon fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="category-content__btn">
+        <a href="#" onclick="exportExcel()" class="btn btn-checkout">
+            <i class="category-content-icon fa-solid fa-download"></i>
+            Tải xuống
+        </a>
+    </div>
+    <div class="grid">
+        <div class="grid__row category-content__lable">
+            <div class="grid__column-2-4">
+                <span>Mã sản phẩm</span>
+            </div>
+            <div class="grid__column-2-4">
+                <span>Tên sản phẩm</span>
+            </div>
+            <div class="grid__column-2-4">
+                <span>Lượt mua</span>
+            </div>           
+            <div class="grid__column-2-4">
+                <span>Doanh thu</span>
+            </div>
+        </div>
+
+
+       @if (Model.Count() > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="grid__row category-content__item">
+                    <div class="grid__column-2-4">
+                        <span>@item.Code</span>
+                    </div>
+                    <div class="grid__column-2-4">
+                        <span class="category-content__item-name">@item.Name</span>
+                    </div>
+                    <div class="grid__column-2-4">
+                        <span class="category-content__item-name">@item.TotalSold</span>
+                    </div>
+                    <div class="grid__column-2-4">
+                        <span>@(String.Format(info, "{0:c}", @item.ProductRevenue))</span>
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        function exportExcel(){
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            window.location.href = "/Report/ExportExcel?startTime=" + startTime + "&endTime=" + endTime;
+        }
+    </script>
+}

@@ -27,7 +27,6 @@ namespace WebShopCore.Model
         public string? Note{ get; set; }
         public decimal Total { get; set; }
         public string Address { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         public int? CreateByUserId { get; set; }
         public int? FeedbackId { get; set; }
 

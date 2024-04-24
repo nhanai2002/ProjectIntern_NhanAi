@@ -534,8 +534,8 @@ namespace WebShopCore.Migrations
                 columns: new[] { "RoleId", "CreatedAt", "IsActive", "IsDeleted", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(893), false, false, "Admin", new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(875) },
-                    { 2, new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1004), false, false, "EndUser", new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1003) }
+                    { 1, new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1270), false, false, "Admin", new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1253) },
+                    { 2, new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1327), false, false, "EndUser", new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1326) }
                 });
 
             migrationBuilder.InsertData(

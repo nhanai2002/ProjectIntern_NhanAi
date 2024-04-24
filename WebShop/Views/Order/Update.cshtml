@@ -47,30 +47,26 @@
 
         <div class="grid category-form__inside">
             <div class="grid__row category-form__heading">
-                <div class="grid__column-2">
-                </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Tên</span>
                 </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Mã sản phẩm</span>
                 </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Giá</span>
                 </div>
             </div>
             @foreach (var orderItem in Model.OrderItems)
             {
                 <div class="grid__row category-form__item">
-                    <div class="grid__column-2">
-                    </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@orderItem.Product.Name</span>
                     </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@orderItem.Product.Code</span>
                     </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@(String.Format(info, "{0:c}", orderItem.PriceTotal))</span>
                     </div>
                 </div>

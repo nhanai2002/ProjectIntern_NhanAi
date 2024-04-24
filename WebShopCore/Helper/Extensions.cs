@@ -31,5 +31,24 @@ namespace WebShopCore.Helper
             }
             return "Check your input price";
         }
+
+        public static string FormatCurrency(this decimal amount)
+        {
+            string suffix = "";
+
+            if (amount >= 1000000000)
+            {
+                suffix = " B";
+                amount /= 1000000000;
+            }
+            else if (amount >= 1000000)
+            {
+                suffix = " M";
+                amount /= 1000000;
+            }
+
+            return string.Format("{0:N0}{1}", amount, suffix);
+        }
+
     }
 }

@@ -175,6 +175,7 @@ namespace WebShop.Controllers
             {
                 order.Address = model.Address;
                 order.IsActive = true;
+                order.UpdatedAt = DateTime.Now;
                 order.PaymentStatus = model.PaymentStatus;
                 order.ShippingStatus = model.ShippingStatus;
                 order.OrderStatus = model.OrderStatus;
@@ -184,8 +185,9 @@ namespace WebShop.Controllers
             return RedirectToAction("Index");
         }
 
+
         [Display(Name = "Xuất hóa đơn pdf")]
-        public async Task<IActionResult> GeneratePdf(long orderId)
+        public async Task<IActionResult> ExportPdf(long orderId)
         {
             var order = _uow.OrderRepository
                 .BuildQuery(x => x.OrderId == orderId)
@@ -193,17 +195,15 @@ namespace WebShop.Controllers
                     .ThenInclude(x => x.Product)
                 .FirstOrDefault();
 
-            if(order == null)
+            if (order == null)
             {
                 return View("Error", "Lỗi ko tìm thấy đơn hàng");
             }
+            return GeneratePdf(order);
+        }
 
-            string duongDanThuMuc = @"D:\HoaDon\";
-            if (!Directory.Exists(duongDanThuMuc))
-            {
-                Directory.CreateDirectory(duongDanThuMuc);
-            }
-
+        private FileResult GeneratePdf(Order order)
+        {
             var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
             if (order != null)
             {
@@ -224,15 +224,17 @@ namespace WebShop.Controllers
                     .Replace("{{Name}}", user.Name)
                     .Replace("{{Address}}", order.Address)
                     .Replace("{{Phone}}", user.Phone)
-                    .Replace("{{OrderDate}}", order.OrderDate.ToString())
+                    .Replace("{{OrderDate}}", order.CreatedAt.ToString())
                     .Replace("{{foreach}}", sp);
 
-                var outputPath = @"D:\HoaDon\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "__" + order.Code +  ".pdf";
                 var renderer = new HtmlToPdf();
-                renderer.RenderHtmlAsPdf(orderTemplateBody).SaveAs(outputPath);
-            }
-            return RedirectToAction("Index");
 
+                var pdf = renderer.RenderHtmlAsPdf(orderTemplateBody);
+                var pdfData = pdf.BinaryData;
+                return File(pdfData, "application/pdf", DateTime.Now.ToString("yyyyMMddHHmmss") + "__" + order.Code + ".pdf");
+            }
+            return null;
         }
+
     }
 }

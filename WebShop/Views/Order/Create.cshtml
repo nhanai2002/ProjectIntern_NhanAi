@@ -47,36 +47,32 @@
 
         <div class="grid category-form__inside">
             <div class="grid__row category-form__heading">
-                <div class="grid__column-2">
-                </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Tên</span>
                 </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Mã sản phẩm</span>
                 </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Giá</span>
                 </div>
-                <div class="grid__column-2">
+                <div class="grid__column-2-4">
                     <span>Chọn</span>
                 </div>
             </div>
             @foreach(var product in Model.ListProductViewModel)
             {
                 <div class="grid__row category-form__item">
-                    <div class="grid__column-2">
-                    </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@product.Name</span>
                     </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@product.Code</span>
                     </div>
-                    <div class="grid__column-2">
+                    <div class="grid__column-2-4">
                         <span class="category-form-name">@(String.Format(info, "{0:c}", product.SellPrice))</span>
                     </div>
-                    <div>
+                    <div class="grid__column-2-4">
                          <input id="check_@product.ProductId" onclick="addProduct(@product.ProductId)" type="checkbox" />
                          <label>@product.ProductId</label>
                     </div>

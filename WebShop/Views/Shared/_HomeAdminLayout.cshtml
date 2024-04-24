@@ -14,46 +14,51 @@
         <li class="category-item  @((active == "2") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="User" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-user"></i>
-                Quản lý Người dùng
+                User
             </a>
         </li>
         <li class="category-item  @((active == "8") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="Staff" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-user-shield"></i>
-                Quản lý Nhân viên
+                Staff
             </a>
         </li>
         <li class="category-item @((active == "3") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="UserRole" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-pen-ruler"></i>
-                Quản lý Vai trò
+                Role
             </a>
         </li>
         <li class="category-item @((active == "4") ? "category-item--active" :"" )">
             <a asp-action="Index" asp-controller="Product" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-cookie-bite"></i>
-                Quản lý Sản phẩm
+                Product
             </a>
         </li>
         <li class="category-item @((active == "5") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="Category" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-cookie"></i>
-                Quản lý Loại sản phẩm
+                Category
             </a>
         </li>
         <li class="category-item @((active == "6") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="Coupon" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-ticket"></i>
-                Quản lý Coupon
+                Coupon
             </a>
         </li>
         <li class="category-item @((active == "7") ? "category-item--active" :"" ) ">
             <a asp-action="Index" asp-controller="Order" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-file-invoice-dollar"></i>
-                Quản lý Đơn hàng
+                Order
             </a>
         </li>
-
+        <li class="category-item @((active == "9") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Report" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-newspaper"></i>
+                Report
+            </a>
+        </li>
     </ul>
     <div class="category-content">
         @RenderBody()

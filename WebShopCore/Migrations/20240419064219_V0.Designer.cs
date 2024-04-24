@@ -11,7 +11,7 @@ using WebShopCore;
 namespace WebShopCore.Migrations
 {
     [DbContext(typeof(WebShopDbContext))]
-    [Migration("20240416094153_V0")]
+    [Migration("20240419064219_V0")]
     partial class V0
     {
         /// <inheritdoc />
@@ -630,20 +630,20 @@ namespace WebShopCore.Migrations
                         new
                         {
                             RoleId = 1,
-                            CreatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(893),
+                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1270),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(875)
+                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1253)
                         },
                         new
                         {
                             RoleId = 2,
-                            CreatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1004),
+                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1327),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "EndUser",
-                            UpdatedAt = new DateTime(2024, 4, 16, 16, 41, 53, 464, DateTimeKind.Local).AddTicks(1003)
+                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1326)
                         });
                 });
 

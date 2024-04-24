@@ -1,20 +1,154 @@
-﻿@{
+﻿@model WebShopCore.ViewModel.Home.DashboardViewModel
+@{
     ViewData["Title"] = "Home Page";
     Layout = "_HomeAdminLayout";
     ViewBag.active = "1";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var valueY1 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.totals.ToList());
+    var valueY2 = Newtonsoft.Json.JsonConvert.SerializeObject(Model.TotalSold.ToList());
 }
+<div class="category-content-list category-content-list--active">
+    <input asp-for="TotalSold" id="TotalSold" hidden />
+    <input asp-for="totals" id="totals" hidden />
+    <div class="category-widgets">
+        <div class="category-widgets__item category-widgets__item--red">
+            <span>
+                <i class="fa-solid fa-cookie"></i>
+                Products
+            </span>
+            <div class="category-widgets__item-value">@Model.products</div>
+        </div>
+        <div class="category-widgets__item category-widgets__item--blue">
+            <span>
+                <i class="fa-regular fa-money-bill-1"></i>
+                Revenue
+            </span>
+            <div class="category-widgets__item-value">
+                @(String.Format(info, "{0:c}", @Model.Revenue))
+            </div>
+        </div>
+        <div class="category-widgets__item category-widgets__item--yellow">
+            <span>
+                <i class="fa-solid fa-users"></i>
+                Users
+            </span>
+            <div class="category-widgets__item-value">@Model.users</div>
+        </div>
+        <div class="category-widgets__item category-widgets__item--green">
+            <span>
+                <i class="fa-solid fa-file-invoice"></i>
+                Orders
+            </span>
+            <div class="category-widgets__item-value">@Model.orders</div>
+        </div>
+    </div>
 
-@*<a asp-action="Index" asp-controller="Product">Product</a>
-<br />
-<a asp-action="Index" asp-controller="Category">Category</a>
-<br />
-<a asp-action="Index" asp-controller="Coupon">Coupon</a>
-<br />
-<a asp-action="Index" asp-controller="Order">Order</a>
-<br />
-<a asp-action="Index" asp-controller="User">User</a>
-<br />
-<a asp-action="Index" asp-controller="UserRole">UserRole</a>
-<br />
-<a asp-action="Logout" asp-controller="Auth">Logout</a>
-*@
+
+    <div class="category-chart">
+        <div class="category-chart__item">
+            <canvas id="myChart" width="200" height="110" style="width:197px; height:110px;"></canvas>
+        </div>
+
+        <div class="category-chart__top-product">
+            <div class="top-product__lable">TOP PRODUCTS</div>
+            <div class="top-product__heading">
+                <span class="top-product__item">Tên sản phẩm</span>
+                <span class="top-product__item">Lượt bán</span>
+                <span class="top-product__item">Doanh thu</span>
+            </div>
+            <div class="top-product__body">
+                @foreach(var product in Model.ListProducts)
+                {
+                    <div class="top-product__body-item">
+                        <span class="top-product__item top-product__item-name">@product.Name</span>
+                        <span class="top-product__item">@product.TotalSold</span>
+                        <span class="top-product__item">
+                            @(String.Format(info, "{0:c}", product.ProductRevenue))
+                        </span>
+                    </div>
+                }
+            </div>       
+        </div>
+    </div>
+
+
+    <div class="category-customer">
+        <div class="category-customer__lable">
+            Khách hàng tiềm năng
+        </div>
+        <div class="category-customer__heading">
+            <span class="category-customer__heading-item">Mã khách hàng</span>
+            <span class="category-customer__heading-item">Tên</span>
+            <span class="category-customer__heading-item">Lượt mua</span>
+            <span class="category-customer__heading-item">Tổng</span>
+        </div>
+
+        <div class="category-customer__body">
+            @foreach(var user in Model.ListUsers)
+            {
+                <div class="category-customer__body-item">
+                    <span class="category-customer__body-value">@user.UserId</span>
+                    <span class="category-customer__body-value top-product__item-name">@user.Name</span>
+                    <span class="category-customer__body-value">@user.Purchases</span>
+                    <span class="category-customer__body-value">
+                        @(String.Format(info, "{0:c}", user.Total))
+                    </span>
+                </div>
+            } 
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+       
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                datasets: [{
+                    label: 'Số tiền bán được',
+                    data: @Html.Raw(valueY1),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-1',
+                },
+                {
+                    label: 'Số lượng sản phẩm đã bán',
+                data: @Html.Raw(valueY2),
+                    type: 'line',
+                    fill: false,
+                    borderColor: 'rgb(75, 0, 130)',
+                    tension: 0.1,
+                    yAxisID: 'y-axis-2',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    'y-axis-1': { 
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    'y-axis-2': { 
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    },
+                }
+            }
+        });
+    </script>
+
+}
