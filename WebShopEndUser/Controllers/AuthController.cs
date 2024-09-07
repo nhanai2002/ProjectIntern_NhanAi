@@ -13,6 +13,7 @@ using WebShopEndUser.Models;
 using WebShopCore.Repositories;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Encodings.Web;
+using WebShopCore.ViewModel.Notification;
 
 namespace WebShopEndUser.Controllers
 {
@@ -92,6 +93,21 @@ namespace WebShopEndUser.Controllers
             var authenticationModel = CreateAuthModel(user);
             return authenticationModel;
         }
+        //private List<NotificationViewModel> GetNotiByUser(int userId)
+        //{
+        //    var listNotification = _uow.UserNotiRepository
+        //        .BuildQuery(x => !x.IsDeleted && x.UserId.Value == userId)
+        //        .Include(x => x.Notification)
+        //        .Select(x => new NotificationViewModel()
+        //        {
+        //            NotiId = x.NotiId.Value,
+        //            Title = x.Notification.Title,
+        //            Message = x.Notification.Message,
+        //            MessageType = x.Notification.MessageType
+        //        })
+        //        .ToList();
+        //    return listNotification;
+        //}
 
         private AuthenticationModel CreateAuthModel(User user)
         {
@@ -199,13 +215,13 @@ namespace WebShopEndUser.Controllers
         }
 
 
-        public ActionResult ForgotPassword()
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> ForgotPassword(ChangePasswordViewModel model)
+        public IActionResult ForgotPassword(ChangePasswordViewModel model)
         {
             var checkExistUser = _uow.UserRepository.FirstOrDefault(x => x.UserName == model.UserName && x.Email == model.Email && x.ConfirmEmail == true);
             if (checkExistUser == null)
@@ -263,12 +279,12 @@ namespace WebShopEndUser.Controllers
             }
         }
 
-        public ActionResult CheckMail()
+        public IActionResult CheckMail()
         {
             return View();
         }
 
-        public ActionResult ResetPassword(string username, string code)
+        public IActionResult ResetPassword(string username, string code)
         {
             var user = _uow.UserRepository.FirstOrDefault(x => x.UserName == username);
             if (user != null)
@@ -286,7 +302,7 @@ namespace WebShopEndUser.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ResetPassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {

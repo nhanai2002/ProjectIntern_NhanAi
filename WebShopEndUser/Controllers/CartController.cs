@@ -441,7 +441,7 @@ namespace WebShopEndUser.Controllers
                             ProductId = product.ProductId,
                             Price = product.SellPrice,
                             PriceTotal = product.SellPrice,
-                            Quantity = 1,
+                            Quantity = 1,   // coi lai
                             Order = order,
                             OrderId = order.OrderId
                         };

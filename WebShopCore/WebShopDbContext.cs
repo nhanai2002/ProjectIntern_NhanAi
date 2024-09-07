@@ -26,8 +26,8 @@ namespace WebShopCore
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            modelBuilder.Entity<Cart>().Property(u => u.CouponId).IsRequired(false); // Cho phép null
-            modelBuilder.Entity<Order>().Property(u => u.FeedbackId).IsRequired(false); // Cho phép null
+            modelBuilder.Entity<Cart>().Property(u => u.CouponId).IsRequired(false); 
+            modelBuilder.Entity<Order>().Property(u => u.FeedbackId).IsRequired(false); 
             modelBuilder.Entity<Image>().Property(u => u.FeedbackId).IsRequired(false);
 
 
@@ -63,6 +63,8 @@ namespace WebShopCore
         public DbSet<CartHistory> cartHistories { get; set; }
         public DbSet<Order> orders { get; set; }
         public DbSet<OrderItem> orderItems { get; set; }
-
+        public DbSet<Notification> notifications { get; set; }
+        public DbSet<HubConnection> hubConnections { get; set; }
+        public DbSet<UserNoti> userNotis { get; set; }
     }
 }

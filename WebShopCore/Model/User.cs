@@ -38,7 +38,7 @@ namespace WebShopCore.Model
         public DateTime? JoinedAt { get; set; }
 
         public int RoleId { get; set; }
-        public int? CartId { get; set; }
+        public int? CartId { get; set; } 
     }
 
     public class User : BaseUser
@@ -47,5 +47,6 @@ namespace WebShopCore.Model
         public Role Role { get; set; }
         [ForeignKey(nameof(CartId))]
         public Cart Cart { get; set; }
+
     }
 }

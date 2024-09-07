@@ -30,6 +30,9 @@ namespace WebShopCore.Repositories
         private IOrderItemRepository _OrderItemRepository;
         private IFeedbackRepository _FeedbackRepository;
         private IProductFeedBackRepository _ProductFeedBackRepository;
+        private IHubConnectionRepository _HubConnectionRepository;
+        private INotificationRepository _NotificationRepository;
+        private IUserNotiRepository _UserNotiRepository;
 
         public UnitOfWork(WebShopDbContext context)
         {
@@ -53,7 +56,9 @@ namespace WebShopCore.Repositories
         public IOrderItemRepository OrderItemRepository => _OrderItemRepository ??= new OrderItemRepository(_context);
         public IFeedbackRepository FeedbackRepository => _FeedbackRepository ??= new FeedbackRepository(_context);
         public IProductFeedBackRepository ProductFeedBackRepository => _ProductFeedBackRepository ??= new ProductFeedBackRepository(_context);
-
+        public IHubConnectionRepository HubConnectionRepository => _HubConnectionRepository ??= new HubConnectionRepository(_context);
+        public INotificationRepository NotificationRepository => _NotificationRepository ??= new NotificationRepository(_context);
+        public IUserNotiRepository UserNotiRepository => _UserNotiRepository ??= new UserNotiRepository(_context);
 
         public async Task CommitAsync()
         {

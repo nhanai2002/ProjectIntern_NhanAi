@@ -1,25 +1,56 @@
 ﻿@using WebShopCore.Helper
 @{
-    var user = Context.Session.GetCurrentAuthentication();
+    var user = Context.Session.GetCurrentAuthentication();    
 }
 
 @if(user != null){
+    <input type="hidden" id="hfUserId" value="@user.UserId" />
     <ul class="header__navbar-list">
-        <li class="header__navbar-item header__navbar-item--has-notify">
+        <li onclick="showNotification()"  class="header__navbar-item header__navbar-item--has-notify">
             <a href="#" class="header__navbar-icon-link">
                 <i class="header__navbar-icon fa-solid fa-bell"></i>
                 <span class="no-pointer">Thông báo</span>
             </a>
             <div class="header__notify">
-                <div class="header__notify-no-login">
-                    <img src="/assets/image/no-login.png" alt="" class="header__notify-img">
-                    <div class="header__notify-lable">Đăng nhập để xem thông báo</div>
-                </div>
-                <div class="header__notify-btn">
-                    <button class="notify-btn header__notify-btn-login">Đăng nhập</button>
-                    <button class="notify-btn header__notify-btn-register">Đăng ký</button>
-                </div>
+                <header class="header__notify-header">
+                    <h3>Thông báo mới nhận</h3>
+                </header>
+                <ul class="header__notify-list">
+
+                </ul>
+
+                <!-- chưa có thông báo -->
+@*                @if(!user.Notify.Any() || user.Notify.Count() < 0)
+                {
+                    <div class="header__notify-no-login">
+                        <img src="/assets/image/no-login.png" alt="" class="header__notify-img">
+                        <div class="header__notify-lable">Chưa có thông báo</div>
+                    </div>
+                }
+                else
+                {
+                    <!-- đã có thông báo -->
+                    <ul class="header__notify-list">
+                    @foreach(var noti in user.Notify)
+                    {
+                        <li onclick="seennotification(this)" class="header__notify-item header__notify-item--viewed">
+                            <a href="#" class="header__notify-link">
+                                <img src="~/assets/image/ip.png" class="header__notify-img" />
+                                <div class="header__notify-info">
+                                    <span class="header__notify-name">@noti.Title</span>
+                                    <span class="header__notify-description">@noti.Message</span>
+                                    <span class="header__notify-time">@noti.SendAt</span>
+                                </div>
+                            </a>
+                        </li>
+
+                    }
+                    </ul>
+
+                }
+*@
             </div>
+
         </li>
 
         <li class="header__navbar-item">
@@ -48,7 +79,7 @@
 else
 {
     <ul class="header__navbar-list">
-        <li class="header__navbar-item header__navbar-item--has-notify">
+        <li onclick="showNotification()" class="header__navbar-item header__navbar-item--has-notify">
             <a href="#" class="header__navbar-icon-link">
                 <i class="header__navbar-icon fa-solid fa-bell"></i>
                 <span class="no-pointer">Thông báo</span>
@@ -80,4 +111,9 @@ else
             <a asp-action="Register" asp-controller="Auth" class="header__navbar-item-link">Đăng ký</a>
         </li>
     </ul>
+}
+
+@section Scripts{
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notification.js" asp-append-version="true"></script>
 }

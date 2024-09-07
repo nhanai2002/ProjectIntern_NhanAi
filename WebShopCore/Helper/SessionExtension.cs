@@ -27,7 +27,7 @@ namespace WebShopCore.Helper
             return session.GetObjectFromJson<AuthenticationModel>(AuthenticationName);
         }
 
-        public  static T GetObjectFromJson<T>(this ISession session, string key)
+        public static T GetObjectFromJson<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
 

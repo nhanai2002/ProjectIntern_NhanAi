@@ -100,6 +100,28 @@ namespace WebShopCore.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Message = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MessageType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_notifications", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "products",
                 columns: table => new
                 {
@@ -266,6 +288,7 @@ namespace WebShopCore.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    NotificationId = table.Column<int>(type: "int", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -309,6 +332,11 @@ namespace WebShopCore.Migrations
                         column: x => x.CartId,
                         principalTable: "carts",
                         principalColumn: "CartId");
+                    table.ForeignKey(
+                        name: "FK_User_notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "notifications",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -368,6 +396,32 @@ namespace WebShopCore.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "hubConnections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ConnectionId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_hubConnections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_hubConnections_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "images",
                 columns: table => new
                 {
@@ -414,7 +468,6 @@ namespace WebShopCore.Migrations
                     Total = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     Address = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreateByUserId = table.Column<int>(type: "int", nullable: true),
                     FeedbackId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -534,17 +587,17 @@ namespace WebShopCore.Migrations
                 columns: new[] { "RoleId", "CreatedAt", "IsActive", "IsDeleted", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1270), false, false, "Admin", new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1253) },
-                    { 2, new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1327), false, false, "EndUser", new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1326) }
+                    { 1, new DateTime(2024, 4, 27, 14, 42, 26, 256, DateTimeKind.Local).AddTicks(9511), false, false, "Admin", new DateTime(2024, 4, 27, 14, 42, 26, 256, DateTimeKind.Local).AddTicks(9491) },
+                    { 2, new DateTime(2024, 4, 27, 14, 42, 26, 256, DateTimeKind.Local).AddTicks(9562), false, false, "EndUser", new DateTime(2024, 4, 27, 14, 42, 26, 256, DateTimeKind.Local).AddTicks(9562) }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "UserId", "Address", "Avatar", "BirthDay", "CartId", "ConfirmEmail", "CreatedAt", "Email", "Gender", "IsActive", "IsDeleted", "JoinedAt", "LastLoginAt", "Name", "Password", "Phone", "RoleId", "TokenEmail", "UpdatedAt", "UserGuid", "UserName" },
+                columns: new[] { "UserId", "Address", "Avatar", "BirthDay", "CartId", "ConfirmEmail", "CreatedAt", "Email", "Gender", "IsActive", "IsDeleted", "JoinedAt", "LastLoginAt", "Name", "NotificationId", "Password", "Phone", "RoleId", "TokenEmail", "UpdatedAt", "UserGuid", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "123/456", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), "mailtouestest1@gmail.com", 0, true, false, null, null, "Admin 1", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "0123456789", 1, null, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), new Guid("00000000-0000-0000-0000-000000000000"), "admin1" },
-                    { 2, "123/456", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), "mailtouestest1@gmail.com", 0, true, false, null, null, "Admin 2", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "0123456789", 1, null, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), new Guid("00000000-0000-0000-0000-000000000000"), "admin2" }
+                    { 1, "123/456", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), "mailtouestest1@gmail.com", 0, true, false, null, null, "Admin 1", null, "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "0123456789", 1, null, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), new Guid("00000000-0000-0000-0000-000000000000"), "admin1" },
+                    { 2, "123/456", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), "mailtouestest1@gmail.com", 0, true, false, null, null, "Admin 2", null, "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "0123456789", 1, null, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Local), new Guid("00000000-0000-0000-0000-000000000000"), "admin2" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -585,6 +638,11 @@ namespace WebShopCore.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Feedback_UserId",
                 table: "Feedback",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hubConnections_UserId",
+                table: "hubConnections",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -643,6 +701,11 @@ namespace WebShopCore.Migrations
                 column: "CartId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_NotificationId",
+                table: "User",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
                 table: "User",
                 column: "RoleId");
@@ -662,6 +725,9 @@ namespace WebShopCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "couponHistories");
+
+            migrationBuilder.DropTable(
+                name: "hubConnections");
 
             migrationBuilder.DropTable(
                 name: "orderItems");
@@ -701,6 +767,9 @@ namespace WebShopCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "carts");
+
+            migrationBuilder.DropTable(
+                name: "notifications");
 
             migrationBuilder.DropTable(
                 name: "coupons");

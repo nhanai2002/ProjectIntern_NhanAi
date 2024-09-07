@@ -1,0 +1,59 @@
+﻿@model WebShopCore.ViewModel.Notification.NotificationCrudModel
+@{
+    ViewData["Title"] = "Quản lý thông báo";
+    Layout = "_HomeAdminLayout";
+    ViewBag.active = "10";
+}
+
+<div class="admin__form">
+    <form asp-action="Create" method="post" class="admin__form-form">
+        <h2>Tạo thông báo</h2>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Tiêu đề</div>
+            <input asp-for="Title" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Nội dung</div>
+            <input asp-for="Message" class="admin__form-input" />
+        </div>
+        <div class="admin__form-item">
+            <div class="admin__form-lable">Loại thông báo</div>
+            <select asp-for="MessageType" id="MessageType" asp-items="Html.GetEnumSelectList<SysEnum.NotificationType>()" onchange="handleMessageTypeChange()" class="category-search__select">
+                <option selected="selected" value="">Chọn thông báo</option>
+            </select>
+        </div>
+        <div class="admin__form-item" >
+            <div class="admin__form-lable">Danh sách người dùng</div>
+            <select asp-for="UserId" asp-items="@(new SelectList(Model.ListUserVM, "UserId","UserName"))" id="userSelect" disabled class="category-search__select">
+                <option selected="selected" value="">Chọn người dùng</option>
+            </select>
+        </div>
+        <div class="admin__form-btn">
+            <a asp-action="Index" class="btn btn-comback">
+                Trở về
+            </a>
+            <button type="submit" class="btn btn-checkout">
+                Save
+            </button>
+        </div>
+    </form>
+
+</div>
+@section Scripts{
+    <script>
+        function handleMessageTypeChange() {
+            var messageTypeSelect = document.getElementById("MessageType");
+            var userSelect = document.getElementById("userSelect");
+            
+            if (messageTypeSelect.value == 0) {
+                userSelect.value = '';
+                userSelect.disabled = true;
+            } else {
+                userSelect.disabled = false;
+            }
+        }
+
+
+
+    </script>
+}

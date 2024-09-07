@@ -34,5 +34,8 @@ namespace WebShopCore.Interfaces
         IOrderItemRepository OrderItemRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }
         IProductFeedBackRepository ProductFeedBackRepository { get; }
+        IHubConnectionRepository HubConnectionRepository { get; }
+        INotificationRepository NotificationRepository { get; }
+        IUserNotiRepository UserNotiRepository { get; }
     }
 }

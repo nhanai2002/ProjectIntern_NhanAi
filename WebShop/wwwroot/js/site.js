@@ -2,7 +2,7 @@
     $('.js-example-basic-multiple').select2();
 });
 
-var elements = $$('.category-content__item');
+var elements = document.querySelectorAll('.category-content__item');
 
 elements.forEach(function (element) {
     var hasImage = element.getElementsByTagName('img').length > 0;

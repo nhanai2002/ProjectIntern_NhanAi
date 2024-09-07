@@ -38,6 +38,16 @@ namespace WebShopCore.Const
             Hidden = 3
         }
 
+        public enum NotificationType
+        {
+            [Display(Name = "Tất cả")]
+            All = 0,
+            [Display(Name = "Cá nhân")]
+            Personal = 1,
+            [Display(Name = "Nhóm")]
+            Group = 2
+        }
+
         public enum CouponType
         {
             [Display(Name = "Giảm thẳng")]

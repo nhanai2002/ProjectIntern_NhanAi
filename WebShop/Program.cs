@@ -7,6 +7,7 @@ using WebShopCore;
 using WebShopCore.Interfaces;
 using WebShopCore.Repositories;
 using WebShopCore.Services.FileUploadService;
+using WebShopCore.Services.Hubs;
 using WebShopCore.Services.MailService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,9 @@ IronPdf.License.LicenseKey = builder.Configuration["IronPdf:LicenseKey"];
 
 builder.Services.AddScoped<LoginRequired>();
 
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // cấu hình cho việc xử lý form
 builder.Services.Configure<FormOptions>(x =>
@@ -31,6 +34,7 @@ builder.Services.Configure<FormOptions>(x =>
     x.MultipartBodyLengthLimit = int.MaxValue;
 });
 
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(100);
@@ -38,20 +42,40 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     // lưu cookie phụ thuộc vào chính sách của trình duyệt
     options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
 });
 
+
+builder.Services.AddCors(options =>
+{
+options.AddPolicy("AllowSpecificOrigins",
+            builder => builder
+                .WithOrigins("https://localhost:7071") // Cho phép các URL được xác định
+                .AllowAnyMethod() // Cho phép mọi phương thức HTTP
+                .AllowAnyHeader() // Cho phép mọi tiêu đề
+                .AllowCredentials()); // Cho phép cookie và thông tin đăng nhập
+});
+
+
+
 // cloudinary
 builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("Cloudinary"));
-
 builder.Services.AddScoped<IFileUploadService, CloudinaryUploadService>();
 
+
+// mail
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddScoped<ISendMailService, SendMailService>();
 
+
+// notification
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationHub, NotificationHub>();
+//builder.Services.AddScoped<NotificationHub>();
 
 
 string connectionString = builder.Configuration.GetConnectionString("Default");
@@ -80,15 +104,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors("AllowSpecificOrigins"); // Áp dụng chính sách CORS
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

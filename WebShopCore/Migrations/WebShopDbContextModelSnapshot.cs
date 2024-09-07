@@ -311,6 +311,38 @@ namespace WebShopCore.Migrations
                     b.ToTable("Feedback");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.HubConnection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("hubConnections");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Image", b =>
                 {
                     b.Property<int>("ImageId")
@@ -341,6 +373,46 @@ namespace WebShopCore.Migrations
                     b.HasIndex("FeedbackId");
 
                     b.ToTable("images");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.Notification", b =>
+                {
+                    b.Property<int>("NotiId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("MessageType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Seen")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("SendAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("NotiId");
+
+                    b.ToTable("notifications");
                 });
 
             modelBuilder.Entity("WebShopCore.Model.Order", b =>
@@ -380,9 +452,6 @@ namespace WebShopCore.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -627,20 +696,20 @@ namespace WebShopCore.Migrations
                         new
                         {
                             RoleId = 1,
-                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1270),
+                            CreatedAt = new DateTime(2024, 4, 29, 21, 58, 24, 884, DateTimeKind.Local).AddTicks(9820),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1253)
+                            UpdatedAt = new DateTime(2024, 4, 29, 21, 58, 24, 884, DateTimeKind.Local).AddTicks(9799)
                         },
                         new
                         {
                             RoleId = 2,
-                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1327),
+                            CreatedAt = new DateTime(2024, 4, 29, 21, 58, 24, 884, DateTimeKind.Local).AddTicks(9983),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "EndUser",
-                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1326)
+                            UpdatedAt = new DateTime(2024, 4, 29, 21, 58, 24, 884, DateTimeKind.Local).AddTicks(9983)
                         });
                 });
 
@@ -771,6 +840,40 @@ namespace WebShopCore.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.UserNoti", b =>
+                {
+                    b.Property<int>("IdUserNoti")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("NotiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("IdUserNoti");
+
+                    b.HasIndex("NotiId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("userNotis");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.ActionRole", b =>
                 {
                     b.HasOne("WebShopCore.Model.ActionCtrl", "ActionCtrl")
@@ -836,6 +939,17 @@ namespace WebShopCore.Migrations
                 });
 
             modelBuilder.Entity("WebShopCore.Model.Feedback", b =>
+                {
+                    b.HasOne("WebShopCore.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.HubConnection", b =>
                 {
                     b.HasOne("WebShopCore.Model.User", "User")
                         .WithMany()
@@ -963,6 +1077,23 @@ namespace WebShopCore.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.UserNoti", b =>
+                {
+                    b.HasOne("WebShopCore.Model.Notification", "Notification")
+                        .WithMany("UserNoti")
+                        .HasForeignKey("NotiId");
+
+                    b.HasOne("WebShopCore.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.ActionCtrl", b =>
                 {
                     b.Navigation("ActionRole");
@@ -983,6 +1114,11 @@ namespace WebShopCore.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("ProductFeedBacks");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.Notification", b =>
+                {
+                    b.Navigation("UserNoti");
                 });
 
             modelBuilder.Entity("WebShopCore.Model.Order", b =>

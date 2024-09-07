@@ -29,6 +29,12 @@
                 Role
             </a>
         </li>
+        <li class="category-item @((active == "10") ? "category-item--active" :"" ) ">
+            <a asp-action="Index" asp-controller="Notification" class="category-item__link">
+                <i class="category-item__link-icon fa-solid fa-bell"></i>
+                Notify
+            </a>
+        </li>
         <li class="category-item @((active == "4") ? "category-item--active" :"" )">
             <a asp-action="Index" asp-controller="Product" class="category-item__link">
                 <i class="category-item__link-icon fa-solid fa-cookie-bite"></i>

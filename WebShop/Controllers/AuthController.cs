@@ -54,16 +54,10 @@ namespace WebShop.Controllers
             {
                 return RedirectToAction("Error", new { errorMessage = "Thông tin đăng nhập không hợp lệ" });
             }
-            //if(user.RoleId == (int)SysEnum.DefaultRole.EndUser)
-            //{
-            //    return RedirectToAction("ProhibitAccess", "Home");
-            //}
+            
             HttpContext.Session.SetCurrentAuthentication(user);
             var lastRequestURL = HttpContext.Session.GetString(TextConstant.LastRequestURL);
-            //if (lastRequestURL.Contains("/Home/ProhibitAccess"))
-            //{
-            //    return Redirect("/");
-            //}
+            
             if (string.IsNullOrEmpty(lastRequestURL))
             {
                 return Redirect("/");

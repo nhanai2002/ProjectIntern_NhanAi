@@ -11,8 +11,8 @@ using WebShopCore;
 namespace WebShopCore.Migrations
 {
     [DbContext(typeof(WebShopDbContext))]
-    [Migration("20240419064219_V0")]
-    partial class V0
+    [Migration("20240428080444_V2")]
+    partial class V2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -314,6 +314,38 @@ namespace WebShopCore.Migrations
                     b.ToTable("Feedback");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.HubConnection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("hubConnections");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Image", b =>
                 {
                     b.Property<int>("ImageId")
@@ -344,6 +376,40 @@ namespace WebShopCore.Migrations
                     b.HasIndex("FeedbackId");
 
                     b.ToTable("images");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.Notification", b =>
+                {
+                    b.Property<int>("IdNoti")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("MessageType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("IdNoti");
+
+                    b.ToTable("notifications");
                 });
 
             modelBuilder.Entity("WebShopCore.Model.Order", b =>
@@ -383,9 +449,6 @@ namespace WebShopCore.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -630,20 +693,20 @@ namespace WebShopCore.Migrations
                         new
                         {
                             RoleId = 1,
-                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1270),
+                            CreatedAt = new DateTime(2024, 4, 28, 15, 4, 44, 636, DateTimeKind.Local).AddTicks(790),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "Admin",
-                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1253)
+                            UpdatedAt = new DateTime(2024, 4, 28, 15, 4, 44, 636, DateTimeKind.Local).AddTicks(776)
                         },
                         new
                         {
                             RoleId = 2,
-                            CreatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1327),
+                            CreatedAt = new DateTime(2024, 4, 28, 15, 4, 44, 636, DateTimeKind.Local).AddTicks(831),
                             IsActive = false,
                             IsDeleted = false,
                             Name = "EndUser",
-                            UpdatedAt = new DateTime(2024, 4, 19, 13, 42, 19, 433, DateTimeKind.Local).AddTicks(1326)
+                            UpdatedAt = new DateTime(2024, 4, 28, 15, 4, 44, 636, DateTimeKind.Local).AddTicks(830)
                         });
                 });
 
@@ -696,6 +759,9 @@ namespace WebShopCore.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int?>("NotificationIdNoti")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -726,6 +792,8 @@ namespace WebShopCore.Migrations
                     b.HasKey("UserId");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("NotificationIdNoti");
 
                     b.HasIndex("RoleId");
 
@@ -849,6 +917,17 @@ namespace WebShopCore.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebShopCore.Model.HubConnection", b =>
+                {
+                    b.HasOne("WebShopCore.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebShopCore.Model.Image", b =>
                 {
                     b.HasOne("WebShopCore.Model.Feedback", "Feedback")
@@ -955,6 +1034,10 @@ namespace WebShopCore.Migrations
                         .WithMany()
                         .HasForeignKey("CartId");
 
+                    b.HasOne("WebShopCore.Model.Notification", null)
+                        .WithMany("Users")
+                        .HasForeignKey("NotificationIdNoti");
+
                     b.HasOne("WebShopCore.Model.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -986,6 +1069,11 @@ namespace WebShopCore.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("ProductFeedBacks");
+                });
+
+            modelBuilder.Entity("WebShopCore.Model.Notification", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("WebShopCore.Model.Order", b =>

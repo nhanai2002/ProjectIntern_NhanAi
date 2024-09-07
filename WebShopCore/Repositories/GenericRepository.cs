@@ -40,7 +40,7 @@ namespace WebShopCore.Repositories
             _context.Set<T>().Remove(e);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
+        public virtual T FirstOrDefault(Expression<Func<T, bool>> predicate)
         {
             IQueryable<T> set = _context.Set<T>();
             return set.FirstOrDefault(predicate);

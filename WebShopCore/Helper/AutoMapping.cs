@@ -12,6 +12,7 @@ using WebShopCore.ViewModel.Category;
 using WebShopCore.ViewModel.Coupon;
 using WebShopCore.ViewModel.Feedback;
 using WebShopCore.ViewModel.Image;
+using WebShopCore.ViewModel.Notification;
 using WebShopCore.ViewModel.Order;
 using WebShopCore.ViewModel.Product;
 using WebShopCore.ViewModel.ProductCategory;
@@ -34,39 +35,54 @@ namespace WebShopCore.Helper
             CreateMap<ProductImageViewModel, ProductImage>().ReverseMap();
             CreateMap<ProductCategoryViewModel, ProductCategory>().ReverseMap();
 
+
+            // category
             CreateMap<CategoryViewModel, Category>().ReverseMap();
             CreateMap<CategoryCrudModel, Category>().ReverseMap();
 
+
+            // image
             CreateMap<ImageCrudModel, Image>().ReverseMap();
             CreateMap<ImageViewModel, Image>().ReverseMap();
+
 
             // coupon
             CreateMap<CouponViewModel, Coupon>().ReverseMap();
             CreateMap<CouponCrudModel, Coupon>().ReverseMap();
             
+
             // role
             CreateMap<ActionCtrlViewModel, ActionRole>().ReverseMap();
 
             CreateMap<RoleCrudModel, Role>().ReverseMap();
             CreateMap<RoleViewModel, Role>().ReverseMap();
 
+
             // cart
             CreateMap<CartViewModel, Cart>().ReverseMap();
             CreateMap<CartItemViewModel, CartItem>().ReverseMap();
+
 
             // order
             CreateMap<OrderViewModel, Order>().ReverseMap();
             CreateMap<OrderCrudModel, Order>().ReverseMap();
             CreateMap<OrderItemViewModel, OrderItem>().ReverseMap();
 
+
             // user
             CreateMap<AuthenticationModel, User>().ReverseMap();
             CreateMap<UserCrudModel, User>().ReverseMap();
             CreateMap<UserViewModel, User>().ReverseMap();
 
+
             // feedback
             CreateMap<FeedbackCrudModel, Feedback>().ReverseMap();
             CreateMap<FeedbackViewModel, Feedback>().ReverseMap();
+
+
+            // notify
+            CreateMap<NotificationViewModel, Notification>().ReverseMap();
+            CreateMap<NotificationCrudModel, Notification>().ReverseMap();
 
         }
     }

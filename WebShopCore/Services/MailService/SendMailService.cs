@@ -11,7 +11,7 @@ namespace WebShopCore.Services.MailService
 {
     public class SendMailService : ISendMailService
     {
-        MailSettings _mailSettings { get; set; }
+        private readonly MailSettings _mailSettings;
         public SendMailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;

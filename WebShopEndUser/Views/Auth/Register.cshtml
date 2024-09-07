@@ -50,7 +50,11 @@
                 <label>Mật khẩu</label>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-
+            <div class="field">
+                <input type="password" asp-for="ConfirmPassword" required>
+                <label>Nhập lại mật khẩu</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
             <div class="field">
                 <input type="submit" value="Register">
             </div>

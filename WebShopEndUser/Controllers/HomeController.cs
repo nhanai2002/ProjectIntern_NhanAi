@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
+using WebShopCore.Const;
 using WebShopCore.Helper;
 using WebShopCore.Interfaces;
 using WebShopCore.Model;
+using WebShopCore.Services.Hubs;
 using WebShopCore.ViewModel.Category;
 using WebShopCore.ViewModel.Feedback;
+using WebShopCore.ViewModel.Notification;
 using WebShopCore.ViewModel.Order;
 using WebShopCore.ViewModel.Product;
+using WebShopCore.ViewModel.User;
 using WebShopEndUser.Models;
 using WebShopEndUser.Permission;
 
@@ -106,7 +110,36 @@ namespace WebShopEndUser.Controllers
         {
             return View();
         }
-       
+
+        [LoginRequired]
+        [HttpPost]
+        public IActionResult GetAllNotiByUser(string userId)
+        {
+            var data = _uow.UserNotiRepository.BuildQuery(x => !x.IsDeleted && x.UserId == int.Parse(userId))
+                .Include(x => x.Notification)
+                .OrderByDescending(x => x.Notification.SendAt)
+                .ToList();
+            var list = new List<NotificationViewModel>();
+            foreach(var item in data)
+            {
+                if (item.Notification.SendAt.HasValue)
+                {
+                    list.Add(new NotificationViewModel
+                    {
+                        Title = item.Notification.Title,
+                        Message = item.Notification.Message,
+                        SendAt = item.Notification.SendAt,
+                        Seen = item.Notification.Seen
+                    });
+                }
+            }
+            if (list.Count == 0 || !list.Any())
+            {
+                return BadRequest();
+            }
+            return Json(list);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
